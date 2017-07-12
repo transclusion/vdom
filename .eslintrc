@@ -1,0 +1,19 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": [
+    "plugin:flowtype/recommended",
+    "standard"
+  ],
+  "plugins": [
+    "flowtype",
+    "react"
+  ],
+  "rules": {
+    "react/react-in-jsx-scope": 2
+  }
+}
