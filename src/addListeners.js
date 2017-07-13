@@ -15,7 +15,7 @@ const addListeners = (
         event.preventDefault()
       }
 
-      handleMsg(listeners[type])
+      handleMsg(listeners[type], event)
     }
 
     node.addEventListener(type, handler)
