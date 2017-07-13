@@ -23,6 +23,7 @@
     "lint": "eslint .",
     "prebuild": "yarn run clean",
     "prepublish": "yarn build",
+    "release": "semantic-release --access public",
     "test": "jest",
     "test-watch": "jest --watch"
   },
