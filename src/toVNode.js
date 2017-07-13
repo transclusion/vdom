@@ -4,21 +4,18 @@ import type {VElement, VNode} from './types'
 
 const toVNode = (node: any): VNode => {
   if (node.nodeType === 1) {
+    const type = node.nodeName.toLowerCase()
     const children = Array.from(node.childNodes).map(toVNode)
+    const attrs = Array.from(node.attributes).reduce((a, attr) => {
+      a[attr.name] = attr.value
+      return a
+    }, {})
 
     const vElement: VElement = {
-      type: node.nodeName.toLowerCase(),
-      attrs: {},
+      type,
+      attrs,
       children
     }
-
-    if (node.id) {
-      vElement.attrs.id = node.id
-    }
-
-    Array.from(node.attributes).forEach(attr => {
-      vElement.attrs[attr.name] = attr.value
-    })
 
     return vElement
   }
