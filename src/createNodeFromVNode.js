@@ -7,10 +7,6 @@ import renderStyle from './renderStyle'
 
 const HIDDEN_PROPS = ['on', 'innerHTML']
 
-const DOM_PROPS_MAP = {
-  className: 'class'
-}
-
 const createNodeFromVNode = (
   vNode: VNode,
   handleMsg: Function | null
@@ -23,8 +19,7 @@ const createNodeFromVNode = (
       addListeners(node, data.on, handleMsg)
     }
 
-    Object.keys(vNode.attrs)
-      .map(prop => DOM_PROPS_MAP[prop] || prop)
+    Object.keys(data)
       .filter(key => HIDDEN_PROPS.indexOf(key) === -1)
       .forEach(prop => {
         node.setAttribute(
@@ -33,12 +28,12 @@ const createNodeFromVNode = (
         )
       })
 
-    if (typeof vNode.attrs.innerHTML === 'undefined') {
+    if (typeof data.innerHTML === 'undefined') {
       vNode.children.forEach(child =>
         node.appendChild(createNodeFromVNode(child, handleMsg))
       )
     } else {
-      node.innerHTML = vNode.attrs.innerHTML
+      node.innerHTML = data.innerHTML
     }
 
     return node
