@@ -157,3 +157,37 @@ test('---', () => {
     '<div class="app"><div></div><nav><ul><li><a href="/">foo</a></li><li><a href="/">bar</a></li><li><a href="/">baz</a></li></ul></nav><article class="screen"><h1>test</h1><div><ul><li><a href="/">foo</a></li><li><a href="/">bar</a></li><li><a href="/">baz</a></li></ul></div></article></div>'
   )
 })
+
+test('patch nested attribute in tree with multiple innerHTML attributes', () => {
+  const a = (
+    <div>
+      <ul>
+        <li class="item" innerHTML="1" />
+        <li class="item" innerHTML="2" />
+        <li class="item" innerHTML="3" />
+        <li class="item" innerHTML="4" />
+      </ul>
+    </div>
+  )
+
+  const b = (
+    <div>
+      <ul>
+        <li class="item" innerHTML="1" />
+        <li class="item" innerHTML="2" />
+        <li class="item" innerHTML="3" />
+        <li class="item isActive" innerHTML="4" />
+      </ul>
+    </div>
+  )
+
+  const patches = diff(a, b)
+
+  const element: any = createNodeFromVNode(a, null)
+
+  patch(element, patches, null)
+
+  expect(element.outerHTML).toEqual(
+    '<div><ul><li class="item">1</li><li class="item">2</li><li class="item">3</li><li class="item isActive">4</li></ul></div>'
+  )
+})
