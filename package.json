@@ -6,7 +6,8 @@
   "author": "Marius Lundgård <studio@mariuslundgard.com>",
   "license": "MIT",
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "pre-commit": [
     "flow-check",
