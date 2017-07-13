@@ -4,6 +4,7 @@ import type {Patch} from './types'
 
 import createNodeFromVNode from './createNodeFromVNode'
 import getNodeAtIndex from './getNodeAtIndex'
+import renderStyle from './renderStyle'
 
 const patch = (element: Node, patches: Patch[], handleMsg: Function | null) => {
   patches.forEach(p => {
@@ -56,7 +57,14 @@ const patch = (element: Node, patches: Patch[], handleMsg: Function | null) => {
       case 'SET_PROP': {
         const node: any = getNodeAtIndex(element, index)
 
-        if (node) node.setAttribute(p.key, p.value)
+        if (node) {
+          node.setAttribute(
+            p.key,
+            p.key === 'style' && typeof p.value === 'object'
+              ? renderStyle(p.value)
+              : p.value
+          )
+        }
 
         break
       }

@@ -4,6 +4,10 @@ export type Attrs = {
   [key: string]: any
 }
 
+export type Style = {
+  [prop: string]: string | number
+}
+
 export type VText = string | number
 
 export type VElement = {
@@ -35,7 +39,7 @@ export type RemovePatch = {
 export type SetPropPatch = {
   type: 'SET_PROP',
   key: string,
-  value: string,
+  value: string | Style,
   index: number
 }
 
