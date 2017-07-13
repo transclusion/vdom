@@ -7,7 +7,7 @@ export default (type: string, attrs: ?Attrs, ...children: any[]) => {
     type,
     attrs: attrs || {},
     children: children
-      .filter(c => c !== null && typeof c !== 'undefined')
+      .filter(c => c !== null && typeof c !== 'undefined' && c !== false)
       .reduce((arr, c) => {
         if (Array.isArray(c)) return arr.concat(c)
         arr.push(c)
