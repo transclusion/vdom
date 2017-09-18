@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "jsx": "react",
+    "jsxFactory": "createVElement",
+    "sourceMap": true,
+    "types": ["jest", "node"]
+  },
+  "files": ["src/index.ts", "test/index.spec.tsx"],
+  "include": ["test/index.d.ts"]
+}
