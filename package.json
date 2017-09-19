@@ -1,15 +1,11 @@
 {
   "name": "@transclusion/vdom",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "main": "dist/commonjs/index.js",
   "module": "dist/module/index.js",
   "repository": "git@github.com:transclusion/vdom.git",
   "author": "Marius Lundgård <studio@mariuslundgard.com>",
   "license": "MIT",
-  "files": [
-    "dist",
-    "src"
-  ],
   "pre-commit": [
     "build",
     "lint",
