@@ -11,4 +11,10 @@ npm install @transclusion/vdom --save
 
 ## Features
 
-* Modular.
+* **Modular.** Use only what you need. Provides building blocks for your own opinionated view library.
+* **Worker-optimized.** Leave application logic to a web worker, and DOM stuff to the main thread.
+* **Pure.** Leave side-effects in handler functions, not in the application logic.
+* **Fast**. Blazing fast rendering times.
+* **Light**. Weighs in at 2.5 KB minified+gzipped.
+* **Use JSX.** Comes with a JSX pragma function out-of-the-box which works with Babel and TypeScript.
+* **Types.** Written in TypeScript.
