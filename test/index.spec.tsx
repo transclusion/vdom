@@ -8,7 +8,7 @@ import {
   toVNode
 } from '../src/'
 
-test('patch', () => {
+test('patch nested text node', () => {
   const a = (
     <div>
       <p>
@@ -45,7 +45,7 @@ test('patch', () => {
   )
 })
 
-test('modify attrs in a list', () => {
+test('patch attribute in a list', () => {
   const a = (
     <div>
       <div class="item">foo</div>
@@ -67,7 +67,7 @@ test('modify attrs in a list', () => {
   expect(patches).toHaveLength(2)
 })
 
-test('remove', () => {
+test('remove elements from a list', () => {
   const a = (
     <div class="container">
       <ul class="row">
@@ -97,7 +97,7 @@ test('remove', () => {
   )
 })
 
-test('render array', () => {
+test('patch from empty list to an array of elements', () => {
   const a = (
     <div class="container">
       <ul class="row" />
@@ -120,7 +120,7 @@ test('render array', () => {
   )
 })
 
-test('replace deeply nested node', () => {
+test('patch deeply nested node', () => {
   const a = (
     <div>
       <div>
@@ -156,7 +156,7 @@ test('replace deeply nested node', () => {
   )
 })
 
-test('thunk', () => {
+test('use thunk to optimize rendering', () => {
   expect.assertions(2)
 
   const thunkView = (model: any) => {
@@ -175,7 +175,7 @@ test('thunk', () => {
   expect(element.outerHTML).toEqual(`<div><div>1</div></div>`)
 })
 
-test('"didInsert" hook', () => {
+test('trigger "didInsert" hook when adding hook', () => {
   const a = <div />
   const b = <div hook={{didInsert: 'didInsert'}} />
   const element = createNode(a) as Element
@@ -189,7 +189,7 @@ test('"didInsert" hook', () => {
   })
 })
 
-test('"didUpdate" hook', () => {
+test('trigger "didUpdate" hook when patching child nodes', () => {
   expect.assertions(3)
 
   const a = <div hook={{didUpdate: 'didUpdate'}}>foo</div>
@@ -202,6 +202,23 @@ test('"didUpdate" hook', () => {
 
   patch(element, patches, undefined, (elm, value: any) => {
     expect(value).toEqual('didUpdate')
+  })
+})
+
+test('trigger only "didInsert" hook when inserting', () => {
+  expect.assertions(1)
+
+  const a = <div />
+  const b = (
+    <div>
+      <span hook={{didInsert: 'didInsert', didUpdate: 'didUpdate'}} />
+    </div>
+  )
+  const element = createNode(a) as Element
+  const patches = diff(a, b)
+
+  patch(element, patches, undefined, (elm, value: any) => {
+    expect(value).toEqual('didInsert')
   })
 })
 
@@ -325,9 +342,26 @@ test('diff hook values', () => {
   const b = <button hook={{didUpdate: 'b'}} />
   const patches = diff(a, b)
 
-  expect(patches).toHaveLength(1)
+  expect(patches).toHaveLength(2)
+  expect(patches[0][0]).toEqual(5)
   expect(patches[0][1]).toEqual('hook')
   expect(patches[0][2].didUpdate).toEqual('b')
+  expect(patches[1][0]).toEqual(9)
+  expect(patches[1][1]).toEqual('b')
+})
+
+test('patch hook values', () => {
+  const mockHookHandler = jest.fn()
+  const a = <button hook={{didUpdate: 'a'}} />
+  const b = <button hook={{didUpdate: 'b'}} />
+  const patches = diff(a, b)
+  const element = createNode(a, mockHookHandler) as Element
+
+  patch(element, patches, undefined, mockHookHandler)
+
+  expect(mockHookHandler.mock.calls).toHaveLength(1)
+  expect(mockHookHandler.mock.calls[0][0]).toEqual(element)
+  expect(mockHookHandler.mock.calls[0][1]).toEqual('b')
 })
 
 test('diff event values', () => {

@@ -11,12 +11,11 @@ import {
   SET_ATTR,
   SET_TEXT
 } from './constants'
+
 import {
   AttrKey,
   HookKey,
   IAttrs,
-  IHooks,
-  IListeners,
   IVElement,
   ListenerKey,
   Patch,
@@ -31,16 +30,16 @@ import {isVText} from './isVText'
 import {toHTML} from './toHTML'
 
 const diffHooks = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
-  const aHooks: IHooks = a.hook
-  const bHooks: IHooks = b.hook
+  const aHooks = a.hook
+  const bHooks = b.hook
 
   if (aHooks === bHooks) {
-    return
+    return false
   }
 
   if (!aHooks) {
     patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
-    return
+    return true
   }
 
   if (bHooks) {
@@ -49,6 +48,7 @@ const diffHooks = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
     const keys = aHookKeys.filter(k => bHookKeys.indexOf(k) > -1)
     if (aHookKeys.length !== keys.length) {
       patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
+      return true
     } else {
       let isDifferent = false
       keys.forEach(k => {
@@ -58,22 +58,25 @@ const diffHooks = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
       })
       if (isDifferent) {
         patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
+        return true
       }
     }
   }
+
+  return false
 }
 
 const diffListeners = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
-  const aListeners: IListeners = a.on
-  const bListeners: IListeners = b.on
+  const aListeners = a.on
+  const bListeners = b.on
 
   if (aListeners === bListeners) {
-    return
+    return false
   }
 
   if (!aListeners) {
     patches.push([SET_ATTR, 'on' as AttrKey, bListeners])
-    return
+    return true
   }
 
   if (bListeners) {
@@ -82,6 +85,7 @@ const diffListeners = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
     const keys = aListenerKeys.filter(k => bListenerKeys.indexOf(k) > -1)
     if (aListenerKeys.length !== keys.length) {
       patches.push([SET_ATTR, 'on' as AttrKey, bListeners])
+      return true
     } else {
       let isDifferent = false
       keys.forEach(k => {
@@ -91,9 +95,12 @@ const diffListeners = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
       })
       if (isDifferent) {
         patches.push([SET_ATTR, 'on' as AttrKey, bListeners])
+        return true
       }
     }
   }
+
+  return false
 }
 
 const diffData = (
@@ -101,17 +108,20 @@ const diffData = (
   b: IAttrs | undefined,
   patches: Patch[]
 ) => {
+  let didUpdate = false
+
   if (b) {
     // Diff added/updated attributes
     Object.keys(b).forEach((attr: AttrKey) => {
       if (!a) {
         patches.push([SET_ATTR, attr, b[attr]])
       } else if (attr === 'hook') {
-        diffHooks(a, b, patches)
+        didUpdate = diffHooks(a, b, patches)
       } else if (attr === 'on') {
-        diffListeners(a, b, patches)
+        didUpdate = diffListeners(a, b, patches)
       } else if (a[attr] !== b[attr]) {
         patches.push([SET_ATTR, attr, b[attr]])
+        didUpdate = true
       }
     })
   }
@@ -121,8 +131,13 @@ const diffData = (
     Object.keys(a).forEach((attr: AttrKey) => {
       if (!b || b[attr] === undefined) {
         patches.push([REMOVE_ATTR, attr])
+        didUpdate = true
       }
     })
+  }
+
+  if (didUpdate && b.hook && b.hook.didUpdate) {
+    patches.push([DID_UPDATE, b.hook.didUpdate])
   }
 }
 
@@ -148,8 +163,6 @@ const diffChildren = (a: IVElement, b: IVElement, patches: Patch[]) => {
 
       patches.push([INSERT, extractVNode(b.children[i])])
 
-      didUpdate = true
-
       if (
         isVElement(b.children[i]) &&
         hasHook(b.children[i] as IVElement, 'didInsert')
@@ -159,6 +172,8 @@ const diffChildren = (a: IVElement, b: IVElement, patches: Patch[]) => {
           (b.children[i] as IVElement).data.hook.didInsert
         ])
       }
+
+      didUpdate = true
     } else if (b.children[i] === undefined) {
       patches.push([REMOVE, index])
 
@@ -216,8 +231,8 @@ const diffVNode = (a: VNode, b: VNode, patches: Patch[]) => {
   }
 
   if (isVElement(a) && isVElement(b)) {
-    const aVElement: IVElement = a as IVElement
-    const bVElement: IVElement = b as IVElement
+    const aVElement = a as IVElement
+    const bVElement = b as IVElement
 
     if (
       (!aVElement.data || bVElement.data.innerHTML === undefined) &&

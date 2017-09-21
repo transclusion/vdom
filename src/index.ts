@@ -12,14 +12,3 @@ import {toVNode} from './toVNode'
 export {IAttrs, IVElement, IVThunk, Patch, VNode}
 
 export {createNode, createVElement, diff, mount, patch, thunk, toHTML, toVNode}
-
-// export default {
-//   createNode,
-//   createVElement,
-//   diff,
-//   mount,
-//   patch,
-//   thunk,
-//   toHTML,
-//   toVNode
-// }

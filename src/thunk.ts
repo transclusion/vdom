@@ -1,4 +1,4 @@
-// tslint:disable ban-types no-any variable-name
+// tslint:disable ban-types variable-name
 
 import {IVElement, IVThunk} from './types'
 
