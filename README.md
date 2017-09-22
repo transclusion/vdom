@@ -11,6 +11,7 @@ npm install @transclusion/vdom --save
 
 ## Features
 
+* **Serializable diffs**. Allows splitting application logic between the main thread and a worker thread.
 * **Modular.** Use only what you need. Provides building blocks for your own opinionated view library.
 * **Worker-optimized.** Leave application logic to a web worker, and DOM stuff to the main thread.
 * **Pure.** Leave side-effects in handler functions, not in the application logic.
