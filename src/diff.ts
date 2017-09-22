@@ -116,9 +116,13 @@ const diffData = (
       if (!a) {
         patches.push([SET_ATTR, attr, b[attr]])
       } else if (attr === 'hook') {
-        didUpdate = diffHooks(a, b, patches)
+        if (diffHooks(a, b, patches)) {
+          didUpdate = true
+        }
       } else if (attr === 'on') {
-        didUpdate = diffListeners(a, b, patches)
+        if (diffListeners(a, b, patches)) {
+          didUpdate = true
+        }
       } else if (a[attr] !== b[attr]) {
         patches.push([SET_ATTR, attr, b[attr]])
         didUpdate = true
@@ -136,9 +140,7 @@ const diffData = (
     })
   }
 
-  if (didUpdate && b.hook && b.hook.didUpdate) {
-    patches.push([DID_UPDATE, b.hook.didUpdate])
-  }
+  return didUpdate
 }
 
 const diffChildren = (a: IVElement, b: IVElement, patches: Patch[]) => {
@@ -220,15 +222,16 @@ const diffChildren = (a: IVElement, b: IVElement, patches: Patch[]) => {
     }
   }
 
-  if (didUpdate && hasHook(b, 'didUpdate')) {
-    patches.push([DID_UPDATE, b.data.hook.didUpdate])
-  }
+  return didUpdate
 }
 
 const diffVNode = (a: VNode, b: VNode, patches: Patch[]) => {
   if (a === b) {
     return
   }
+
+  let didInsert = false
+  let didUpdate = false
 
   if (isVElement(a) && isVElement(b)) {
     const aVElement = a as IVElement
@@ -254,16 +257,34 @@ const diffVNode = (a: VNode, b: VNode, patches: Patch[]) => {
         hasHook(bVElement, 'didInsert')
       ) {
         patches.push([DID_INSERT, bVElement.data.hook.didInsert])
+        didInsert = true
       }
 
-      diffData(aVElement.data, bVElement.data, patches)
-      diffChildren(aVElement, bVElement, patches)
+      if (diffData(aVElement.data, bVElement.data, patches)) {
+        didUpdate = true
+      }
+
+      if (diffChildren(aVElement, bVElement, patches)) {
+        didUpdate = true
+      }
     } else {
       patches.push([REPLACE, extractVNode(b)])
+
+      didInsert = true
 
       if (hasHook(bVElement, 'didInsert')) {
         patches.push([DID_INSERT, bVElement.data.hook.didInsert])
       }
+    }
+
+    if (
+      !didInsert &&
+      didUpdate &&
+      bVElement.data &&
+      bVElement.data.hook &&
+      bVElement.data.hook.didUpdate
+    ) {
+      patches.push([DID_UPDATE, bVElement.data.hook.didUpdate])
     }
   } else if (isVText(a) && isVText(b)) {
     patches.push([SET_TEXT, b as string])

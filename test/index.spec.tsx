@@ -364,6 +364,19 @@ test('patch hook values', () => {
   expect(mockHookHandler.mock.calls[0][1]).toEqual('b')
 })
 
+test('trigger "didUpdate" only once', () => {
+  const mockHookHandler = jest.fn()
+  const a = <div hook={{didUpdate: 'a'}}>foo</div>
+  const b = <div hook={{didUpdate: 'b'}}>bar</div>
+  const patches = diff(a, b)
+  const element = createNode(a, mockHookHandler) as Element
+
+  patch(element, patches, undefined, mockHookHandler)
+
+  expect(mockHookHandler.mock.calls).toHaveLength(1)
+  expect(mockHookHandler.mock.calls[0][1]).toEqual('b')
+})
+
 test('diff event values', () => {
   const a = <button on={{click: 'a'}} />
   const b = <button on={{click: 'b'}} />
