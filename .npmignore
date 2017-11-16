@@ -2,6 +2,7 @@
 /.editorconfig
 /.travis.yml
 /node_modules
+/perf
 /src
 /test
 /tsconfig.*
