@@ -21,16 +21,13 @@ const renderAttrs = (data?: IAttrs) => {
   return Object.keys(data)
     .filter(
       (key: AttrKey) =>
-        data[key] !== undefined &&
-        data[key] !== false &&
-        key !== 'innerHTML' &&
-        VIRTUAL_ATTRS.indexOf(key) === -1
+        data[key] !== undefined && data[key] !== false && key !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(key) === -1
     )
     .map(
       (attr: AttrKey) =>
-        ` ${attr}="${attr === 'style' && typeof data[attr] === 'object'
-          ? renderStyle(data[attr] as IStyles)
-          : data[attr]}"`
+        ` ${attr}="${
+          attr === 'style' && typeof data[attr] === 'object' ? renderStyle(data[attr] as IStyles) : data[attr]
+        }"`
     )
     .join('')
 }

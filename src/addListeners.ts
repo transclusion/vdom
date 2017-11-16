@@ -1,12 +1,7 @@
 import {EventHandler, EventType, IListeners} from './types'
 
-export const addListeners = (
-  element: Element,
-  listeners: IListeners,
-  handleEvent: EventHandler
-) => {
-  const eventHandlers = ((element as any).__vdomEventHandlers =
-    (element as any).__vdomEventHandlers || {})
+export const addListeners = (element: Element, listeners: IListeners, handleEvent: EventHandler) => {
+  const eventHandlers = ((element as any).__vdomEventHandlers = (element as any).__vdomEventHandlers || {})
 
   // Remove previous event handlers
   if (eventHandlers) {

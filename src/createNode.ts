@@ -5,12 +5,7 @@ import {addListeners} from './addListeners'
 
 function setAttributes(element: HTMLElement | SVGElement, data: IAttrs) {
   Object.keys(data)
-    .filter(
-      (attr: AttrKey) =>
-        data[attr] !== undefined &&
-        attr !== 'innerHTML' &&
-        VIRTUAL_ATTRS.indexOf(attr) === -1
-    )
+    .filter((attr: AttrKey) => data[attr] !== undefined && attr !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(attr) === -1)
     .forEach((attr: AttrKey) => {
       if (attr === 'style' && typeof data.style === 'object') {
         Object.keys(data[attr]).forEach((styleProp: StyleProp) => {
@@ -19,10 +14,7 @@ function setAttributes(element: HTMLElement | SVGElement, data: IAttrs) {
       } else if (attr !== 'hook' && attr !== 'on') {
         if (typeof data[attr] === 'string') {
           element.setAttribute(attr, String(data[attr]))
-        } else if (
-          typeof data[attr] === 'boolean' &&
-          Boolean(data[attr]) === true
-        ) {
+        } else if (typeof data[attr] === 'boolean' && Boolean(data[attr]) === true) {
           element.setAttribute(attr, '')
         } else {
           element.setAttribute(attr, String(data[attr]))
@@ -36,10 +28,7 @@ const createSVGNode = (vNode: VNode, handleEvent?: EventHandler | null) => {
     return document.createTextNode(vNode)
   }
 
-  const element = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    vNode.name
-  )
+  const element = document.createElementNS('http://www.w3.org/2000/svg', vNode.name)
 
   const data: IAttrs | undefined = vNode.data
 
@@ -51,9 +40,7 @@ const createSVGNode = (vNode: VNode, handleEvent?: EventHandler | null) => {
   }
 
   if (!data || data.innerHTML === undefined) {
-    vNode.children.forEach((c: VNode) =>
-      element.appendChild(createSVGNode(c, handleEvent))
-    )
+    vNode.children.forEach((c: VNode) => element.appendChild(createSVGNode(c, handleEvent)))
   } else {
     element.innerHTML = data.innerHTML
   }
@@ -81,9 +68,7 @@ export const createNode = (vNode: VNode, handleEvent?: EventHandler | null) => {
   }
 
   if (!data || data.innerHTML === undefined) {
-    vNode.children.forEach((c: VNode) =>
-      element.appendChild(createNode(c, handleEvent))
-    )
+    vNode.children.forEach((c: VNode) => element.appendChild(createNode(c, handleEvent)))
   } else {
     element.innerHTML = data.innerHTML
   }

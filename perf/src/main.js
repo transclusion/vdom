@@ -1,12 +1,11 @@
-/* global vdom */
-
-import * as vdom from '../../dist/commonjs'
+import {diff, patch, toVNode} from '../../dist/module'
 import app from './views/app'
 import {generateRows} from './generateData'
 
 const element = document.querySelector('#root')
 
 let state = {rows: [], selected: null}
+
 const handleMsg = (eventType, event, msg) => {
   switch (msg.type) {
     case 'run':
@@ -105,12 +104,13 @@ const handleMsg = (eventType, event, msg) => {
   }
 }
 
-let vNode = vdom.toVNode(element)
+let vNode = toVNode(element)
+
 const render = () => {
   const nextVNode = app(state)
-  const patches = vdom.diff(vNode, nextVNode)
-  // console.log('applying', patches.length, 'patches')
-  vdom.patch(element, patches, handleMsg)
+  const patches = diff(vNode, nextVNode)
+
+  patch(element, patches, handleMsg)
   vNode = nextVNode
 }
 

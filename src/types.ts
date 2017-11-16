@@ -10,11 +10,7 @@ export interface IListeners {
 
 export type EventType = 'click'
 
-export type EventHandler = (
-  eventType: EventType,
-  event: Event,
-  listener: Listener
-) => void
+export type EventHandler = (eventType: EventType, event: Event, listener: Listener) => void
 
 export type HookKey = 'willDiff' | 'didInsert' | 'didUpdate' | 'didRemove'
 

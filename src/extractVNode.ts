@@ -9,4 +9,4 @@ export const extractVNode = (x: VNode): VNode =>
         data: (x as IVElement).data,
         name: (x as IVElement).name
       }
-    : x as VNode
+    : (x as VNode)

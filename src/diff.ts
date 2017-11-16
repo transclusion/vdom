@@ -12,15 +12,7 @@ import {
   SET_TEXT
 } from './constants'
 
-import {
-  AttrKey,
-  HookKey,
-  IAttrs,
-  IVElement,
-  ListenerKey,
-  Patch,
-  VNode
-} from './types'
+import {AttrKey, HookKey, IAttrs, IVElement, ListenerKey, Patch, VNode} from './types'
 
 import {callHook} from './callHook'
 import {extractVNode} from './extractVNode'
@@ -38,7 +30,7 @@ const diffHooks = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
   }
 
   if (!aHooks) {
-    patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
+    // patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
     return true
   }
 
@@ -47,7 +39,7 @@ const diffHooks = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
     const bHookKeys = Object.keys(bHooks) as HookKey[]
     const keys = aHookKeys.filter(k => bHookKeys.indexOf(k) > -1)
     if (aHookKeys.length !== keys.length) {
-      patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
+      // patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
       return true
     } else {
       let isDifferent = false
@@ -57,7 +49,7 @@ const diffHooks = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
         }
       })
       if (isDifferent) {
-        patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
+        // patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
         return true
       }
     }
@@ -103,11 +95,7 @@ const diffListeners = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
   return false
 }
 
-const diffData = (
-  a: IAttrs | undefined,
-  b: IAttrs | undefined,
-  patches: Patch[]
-) => {
+const diffData = (a: IAttrs | undefined, b: IAttrs | undefined, patches: Patch[]) => {
   let didUpdate = false
 
   if (b) {
@@ -155,38 +143,21 @@ const diffChildren = (a: IVElement, b: IVElement, patches: Patch[]) => {
 
     if (a.children[i] === undefined) {
       if (isVElement(b.children[i])) {
-        callHook(
-          b.children[i] as IVElement,
-          'willDiff',
-          a.children[i],
-          b.children[i]
-        )
+        callHook(b.children[i] as IVElement, 'willDiff', a.children[i], b.children[i])
       }
 
       patches.push([INSERT, extractVNode(b.children[i])])
 
-      if (
-        isVElement(b.children[i]) &&
-        hasHook(b.children[i] as IVElement, 'didInsert')
-      ) {
-        patches.push([
-          DID_INSERT,
-          (b.children[i] as IVElement).data.hook.didInsert
-        ])
+      if (isVElement(b.children[i]) && hasHook(b.children[i] as IVElement, 'didInsert')) {
+        patches.push([DID_INSERT, (b.children[i] as IVElement).data.hook.didInsert])
       }
 
       didUpdate = true
     } else if (b.children[i] === undefined) {
       patches.push([REMOVE, index])
 
-      if (
-        isVElement(a.children[i]) &&
-        hasHook(a.children[i] as IVElement, 'didRemove')
-      ) {
-        patches.push([
-          DID_REMOVE,
-          (a.children[i] as IVElement).data.hook.didRemove
-        ])
+      if (isVElement(a.children[i]) && hasHook(a.children[i] as IVElement, 'didRemove')) {
+        patches.push([DID_REMOVE, (a.children[i] as IVElement).data.hook.didRemove])
       }
 
       didUpdate = true
@@ -243,19 +214,14 @@ const diffVNode = (a: VNode, b: VNode, patches: Patch[]) => {
       bVElement.data.innerHTML !== undefined
     ) {
       const innerHTML: string = aVElement.children.map(toHTML).join('')
-      aVElement.data = aVElement.data
-        ? {...aVElement.data, innerHTML}
-        : {innerHTML}
+      aVElement.data = aVElement.data ? {...aVElement.data, innerHTML} : {innerHTML}
       aVElement.children = []
     }
 
     callHook(bVElement, 'willDiff', a, b)
 
     if (aVElement.name === bVElement.name) {
-      if (
-        !hasHook(a as IVElement, 'didInsert') &&
-        hasHook(bVElement, 'didInsert')
-      ) {
+      if (!hasHook(a as IVElement, 'didInsert') && hasHook(bVElement, 'didInsert')) {
         patches.push([DID_INSERT, bVElement.data.hook.didInsert])
         didInsert = true
       }
@@ -277,13 +243,7 @@ const diffVNode = (a: VNode, b: VNode, patches: Patch[]) => {
       }
     }
 
-    if (
-      !didInsert &&
-      didUpdate &&
-      bVElement.data &&
-      bVElement.data.hook &&
-      bVElement.data.hook.didUpdate
-    ) {
+    if (!didInsert && didUpdate && bVElement.data && bVElement.data.hook && bVElement.data.hook.didUpdate) {
       patches.push([DID_UPDATE, bVElement.data.hook.didUpdate])
     }
   } else if (isVText(a) && isVText(b)) {
