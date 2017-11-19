@@ -6,11 +6,6 @@
   "license": "MIT",
   "main": "dist/commonjs/index.js",
   "module": "dist/module/index.js",
-  "pre-commit": [
-    "build",
-    "lint",
-    "test"
-  ],
   "scripts": {
     "build": "npm-run-all tsc-*",
     "clean": "rimraf dist",
