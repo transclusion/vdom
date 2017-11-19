@@ -1,3 +1,4 @@
+import {basicObjectAssign} from './basicObjectAssign'
 import {
   DID_INSERT,
   DID_REMOVE,
@@ -214,7 +215,9 @@ const diffVNode = (a: VNode, b: VNode, patches: Patch[]) => {
       bVElement.data.innerHTML !== undefined
     ) {
       const innerHTML: string = aVElement.children.map(toHTML).join('')
-      aVElement.data = aVElement.data ? {...aVElement.data, innerHTML} : {innerHTML}
+      aVElement.data = aVElement.data
+        ? basicObjectAssign(basicObjectAssign({}, aVElement.data), {innerHTML})
+        : {innerHTML}
       aVElement.children = []
     }
 

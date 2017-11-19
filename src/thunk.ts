@@ -1,14 +1,7 @@
 // tslint:disable ban-types variable-name
 
+import {basicObjectAssign} from './basicObjectAssign'
 import {IVElement, IVThunk} from './types'
-
-const basicObjectAssign = (to: any, from: any) => {
-  Object.keys(from).forEach(key => {
-    to[key] = from[key]
-  })
-
-  return to
-}
 
 const thunk_willDiff = (a: IVThunk, b: IVThunk): IVThunk => {
   if (!a || !a.args || a.fn !== b.fn || a.args.length !== b.args.length) {
