@@ -16,7 +16,7 @@ function setAttributes(element: HTMLElement | SVGElement, data: IAttrs) {
           element.setAttribute(attr, String(data[attr]))
         } else if (typeof data[attr] === 'boolean' && Boolean(data[attr]) === true) {
           element.setAttribute(attr, '')
-        } else {
+        } else if (typeof data[attr] !== 'boolean') {
           element.setAttribute(attr, String(data[attr]))
         }
       }

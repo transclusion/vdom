@@ -16,11 +16,11 @@
     "clean": "rimraf dist",
     "commit": "git-cz",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "lint": "tslint -c tslint.json 'src/**/*.ts'",
+    "lint": "tslint -c tslint.json '{src,test}/**/*.{ts,tsx}'",
     "prebuild": "npm run clean",
     "precommit": "npm run build && npm run lint && npm run test",
     "prepublishOnly": "npm run build",
-    "prettier": "prettier --no-bracket-spacing --no-semi --print-width 120 --single-quote --write \"{src,perf/src}/**/*.{js,ts}\"",
+    "prettier": "prettier --no-bracket-spacing --no-semi --print-width 120 --single-quote --write \"{src,perf/src,test}/**/*.{js,ts,tsx}\"",
     "release": "semantic-release --access public",
     "test": "jest --coverage",
     "test-watch": "jest --watch",
@@ -54,14 +54,15 @@
     "collectCoverageFrom": [
       "src/*.ts"
     ],
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(\\.|/)(test|spec)\\.tsx?$",
     "moduleFileExtensions": [
       "js",
       "ts",
       "tsx"
-    ]
+    ],
+    "testRegex": "(\\.|/)(test|spec)\\.tsx?$",
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "verbose": true
   }
 }

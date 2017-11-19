@@ -7,6 +7,13 @@
     "sourceMap": true,
     "types": ["jest", "node"]
   },
-  "files": ["src/index.ts", "test/index.spec.tsx"],
+  "files": [
+    "src/index.ts",
+    "test/createNode.spec.tsx",
+    "test/diff.spec.tsx",
+    "test/patch.spec.tsx",
+    "test/thunk.spec.tsx",
+    "test/toHTML.spec.tsx"
+  ],
   "include": ["test/index.d.ts"]
 }
