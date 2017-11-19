@@ -7,6 +7,7 @@ npm install @transclusion/vdom --save
 ```
 
 [![build status](https://img.shields.io/travis/transclusion/vdom/master.svg?style=flat-square)](https://travis-ci.org/transclusion/vdom)
+[![coverage status](https://img.shields.io/coveralls/transclusion/vdom/master.svg?style=flat-square)](https://coveralls.io/github/transclusion/vdom?branch=master)
 [![npm version](https://img.shields.io/npm/v/@transclusion/vdom.svg?style=flat-square)](https://www.npmjs.com/package/@transclusion/vdom)
 
 ## Features
