@@ -6,6 +6,7 @@
   "license": "MIT",
   "main": "dist/commonjs/index.js",
   "module": "dist/module/index.js",
+  "typings": "dist/module/index.d.ts",
   "scripts": {
     "build": "npm-run-all tsc-*",
     "clean": "rimraf dist",
