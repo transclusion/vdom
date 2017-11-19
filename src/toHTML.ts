@@ -2,7 +2,7 @@ import {VIRTUAL_ATTRS, VOID_TAGS} from './constants'
 import {isVElement} from './isVElement'
 import {AttrKey, IAttrs, IStyles, IVElement, StyleProp, VNode} from './types'
 
-const renderStyle = (styles: IStyles | string) => {
+const renderStyles = (styles: IStyles | string) => {
   if (typeof styles === 'string') {
     return styles
   }
@@ -23,12 +23,13 @@ const renderAttrs = (data?: IAttrs) => {
       (key: AttrKey) =>
         data[key] !== undefined && data[key] !== false && key !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(key) === -1
     )
-    .map(
-      (attr: AttrKey) =>
-        ` ${attr}="${
-          attr === 'style' && typeof data[attr] === 'object' ? renderStyle(data[attr] as IStyles) : data[attr]
-        }"`
-    )
+    .map((key: AttrKey) => {
+      if (typeof data[key] === 'boolean') {
+        return ` ${key}`
+      }
+
+      return ` ${key}="${key === 'style' ? renderStyles(data[key] as IStyles) : data[key]}"`
+    })
     .join('')
 }
 
