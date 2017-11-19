@@ -20,6 +20,10 @@ npm install @transclusion/vdom --save
 * **Use JSX.** Comes with a JSX-compatible pragma function out of the box which works with Babel and TypeScript.
 * **Typed.** Written in TypeScript.
 
+## Documentation
+
+See [API documentation](API.md).
+
 ## Usage
 
 A basic counter example:
@@ -72,3 +76,7 @@ const render = () => {
 // Start render cycle
 render()
 ```
+
+## License
+
+MIT © [Marius Lundgård](https://mariuslundgard.com)
