@@ -1,6 +1,6 @@
 {
   "name": "@transclusion/vdom",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "repository": "git@github.com:transclusion/vdom.git",
   "author": "Marius Lundgård <studio@mariuslundgard.com>",
   "license": "MIT",
