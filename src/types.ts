@@ -30,11 +30,13 @@ export interface IStyles {
 }
 
 export interface IAttrs {
+  class?: string
   hook?: IHooks
   id?: string
   innerHTML?: string
   on?: IListeners
   style?: IStyles | string
+  [key: string]: any
 }
 
 export type VText = string
