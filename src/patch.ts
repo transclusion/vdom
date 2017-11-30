@@ -18,12 +18,7 @@ import {EventHandler, HookHandler, Patch, StyleProp} from './types'
 import {addListeners} from './addListeners'
 import {createNode} from './createNode'
 
-export const patch = (
-  element: Element,
-  patches: Patch[],
-  handleEvent?: EventHandler | null,
-  handleHook?: HookHandler
-) => {
+export function patch(element: Element, patches: Patch[], handleEvent?: EventHandler | null, handleHook?: HookHandler) {
   const len: number = patches.length
   const nodeStack: Node[] = [element]
   const didInsertHookArgs = []

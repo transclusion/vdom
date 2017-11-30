@@ -22,7 +22,7 @@ import {isVElement} from './isVElement'
 import {isVText} from './isVText'
 import {toHTML} from './toHTML'
 
-const diffHooks = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
+function diffHooks(a: IAttrs, b: IAttrs, patches: Patch[]) {
   const aHooks = a.hook
   const bHooks = b.hook
 
@@ -59,7 +59,7 @@ const diffHooks = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
   return false
 }
 
-const diffListeners = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
+function diffListeners(a: IAttrs, b: IAttrs, patches: Patch[]) {
   const aListeners = a.on
   const bListeners = b.on
 
@@ -96,7 +96,7 @@ const diffListeners = (a: IAttrs, b: IAttrs, patches: Patch[]) => {
   return false
 }
 
-const diffData = (a: IAttrs | undefined, b: IAttrs | undefined, patches: Patch[]) => {
+function diffData(a: IAttrs | undefined, b: IAttrs | undefined, patches: Patch[]) {
   let didUpdate = false
 
   if (b) {
@@ -132,7 +132,7 @@ const diffData = (a: IAttrs | undefined, b: IAttrs | undefined, patches: Patch[]
   return didUpdate
 }
 
-const diffChildren = (a: IVElement, b: IVElement, patches: Patch[]) => {
+function diffChildren(a: IVElement, b: IVElement, patches: Patch[]) {
   const len: number = Math.max(a.children.length, b.children.length)
 
   let i: number
@@ -197,7 +197,7 @@ const diffChildren = (a: IVElement, b: IVElement, patches: Patch[]) => {
   return didUpdate
 }
 
-const diffVNode = (a: VNode, b: VNode, patches: Patch[]) => {
+function diffVNode(a: VNode, b: VNode, patches: Patch[]) {
   if (a === b) {
     return
   }
@@ -256,7 +256,7 @@ const diffVNode = (a: VNode, b: VNode, patches: Patch[]) => {
   }
 }
 
-export const diff = (a: VNode, b: VNode) => {
+export function diff(a: VNode, b: VNode) {
   const patches: Patch[] = []
 
   diffVNode(a, b, patches)

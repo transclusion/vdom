@@ -23,7 +23,7 @@ function setAttributes(element: HTMLElement | SVGElement, data: IAttrs) {
     })
 }
 
-const createSVGNode = (vNode: VNode, handleEvent?: EventHandler | null) => {
+function createSVGNode(vNode: VNode, handleEvent?: EventHandler | null) {
   if (typeof vNode !== 'object') {
     return document.createTextNode(vNode)
   }
@@ -48,7 +48,7 @@ const createSVGNode = (vNode: VNode, handleEvent?: EventHandler | null) => {
   return element
 }
 
-export const createNode = (vNode: VNode, handleEvent?: EventHandler | null) => {
+export function createNode(vNode: VNode, handleEvent?: EventHandler | null) {
   if (typeof vNode !== 'object') {
     return document.createTextNode(vNode)
   }

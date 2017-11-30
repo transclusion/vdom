@@ -1,4 +1,4 @@
-export const basicObjectAssign = (to: any, from: any) => {
+export function basicObjectAssign(to: any, from: any) {
   Object.keys(from).forEach(key => {
     to[key] = from[key]
   })

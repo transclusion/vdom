@@ -1,6 +1,6 @@
 import {AttrKey, IAttrs, VNode} from './types'
 
-export const toVNode = (node: Node) => {
+export function toVNode(node: Node) {
   if (node.nodeType === 1) {
     const name: string = node.nodeName.toLowerCase()
     const children: VNode[] = Array.from(node.childNodes).map(toVNode)

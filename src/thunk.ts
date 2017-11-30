@@ -3,7 +3,7 @@
 import {basicObjectAssign} from './basicObjectAssign'
 import {IVElement, IVThunk} from './types'
 
-const thunk_willDiff = (a: IVThunk, b: IVThunk): IVThunk => {
+function thunk_willDiff(a: IVThunk, b: IVThunk): IVThunk {
   if (!a || !a.args || a.fn !== b.fn || a.args.length !== b.args.length) {
     const vElement: IVElement = b.fn.apply(undefined, b.args)
 
@@ -23,10 +23,12 @@ const thunk_willDiff = (a: IVThunk, b: IVThunk): IVThunk => {
   return basicObjectAssign(b, a) as IVThunk
 }
 
-export const thunk = (fn: Function, ...args: any[]): IVThunk => ({
-  args,
-  children: [],
-  data: {hook: {willDiff: thunk_willDiff}},
-  fn,
-  name: '#thunk'
-})
+export function thunk(fn: Function, ...args: any[]): IVThunk {
+  return {
+    args,
+    children: [],
+    data: {hook: {willDiff: thunk_willDiff}},
+    fn,
+    name: '#thunk'
+  }
+}

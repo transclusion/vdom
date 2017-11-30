@@ -2,7 +2,7 @@ import {VIRTUAL_ATTRS, VOID_TAGS} from './constants'
 import {isVElement} from './isVElement'
 import {AttrKey, IAttrs, IStyles, IVElement, StyleProp, VNode} from './types'
 
-const renderStyles = (styles: IStyles | string) => {
+function renderStyles(styles: IStyles | string) {
   if (typeof styles === 'string') {
     return styles
   }
@@ -13,7 +13,7 @@ const renderStyles = (styles: IStyles | string) => {
     .trim()
 }
 
-const renderAttrs = (data?: IAttrs) => {
+function renderAttrs(data?: IAttrs) {
   if (data === undefined) {
     return ''
   }
@@ -33,7 +33,7 @@ const renderAttrs = (data?: IAttrs) => {
     .join('')
 }
 
-export const toHTML = (vNode: VNode) => {
+export function toHTML(vNode: VNode) {
   if (isVElement(vNode)) {
     const vElement: IVElement = vNode as IVElement
     const data: IAttrs | null = vElement.data

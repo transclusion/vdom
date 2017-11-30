@@ -1,1 +1,3 @@
-export const isVElement = (x: any) => typeof x === 'object' && typeof x.name === 'string'
+export function isVElement(x: any) {
+  return typeof x === 'object' && typeof x.name === 'string'
+}

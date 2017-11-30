@@ -3,7 +3,7 @@ import {EventHandler, IAttrs, IVElement, VNode} from './types'
 import {addListeners} from './addListeners'
 import {isVElement} from './isVElement'
 
-export const mount = (node: Node, vNode: VNode, handleEvent?: EventHandler) => {
+export function mount(node: Node, vNode: VNode, handleEvent?: EventHandler) {
   if (isVElement(vNode)) {
     const vElement: IVElement = vNode as IVElement
 

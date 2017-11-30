@@ -1,1 +1,3 @@
-export const isVText = (x: any) => typeof x === 'string'
+export function isVText(x: any) {
+  return typeof x === 'string'
+}
