@@ -20,8 +20,8 @@
     "release": "semantic-release --access public",
     "test": "jest --coverage",
     "test-watch": "jest --watch",
-    "tsc-es5": "tsc -p tsconfig.commonjs.json",
-    "tsc-es6": "tsc -p tsconfig.module.json"
+    "tsc-es5": "tsc -p .tsconfig/commonjs.json",
+    "tsc-es6": "tsc -p .tsconfig/module.json"
   },
   "devDependencies": {
     "@transclusion/semantic-release": "^0.2.5",
