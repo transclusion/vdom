@@ -30,7 +30,6 @@ function diffHooks(a: IAttrs, b: IAttrs, patches: Patch[]) {
   }
 
   if (!aHooks) {
-    // patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
     return true
   }
 
@@ -38,18 +37,19 @@ function diffHooks(a: IAttrs, b: IAttrs, patches: Patch[]) {
     const aHookKeys = Object.keys(aHooks) as HookKey[]
     const bHookKeys = Object.keys(bHooks) as HookKey[]
     const keys = aHookKeys.filter(k => bHookKeys.indexOf(k) > -1)
+
     if (aHookKeys.length !== keys.length) {
-      // patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
       return true
     } else {
       let isDifferent = false
+
       keys.forEach(k => {
         if (aHooks[k] !== bHooks[k]) {
           isDifferent = true
         }
       })
+
       if (isDifferent) {
-        // patches.push([SET_ATTR, 'hook' as AttrKey, bHooks])
         return true
       }
     }
@@ -68,6 +68,7 @@ function diffListeners(a: IAttrs, b: IAttrs, patches: Patch[]) {
 
   if (!aListeners) {
     patches.push([SET_ATTR, 'on' as AttrKey, bListeners])
+
     return true
   }
 
@@ -75,16 +76,20 @@ function diffListeners(a: IAttrs, b: IAttrs, patches: Patch[]) {
     const aListenerKeys = Object.keys(aListeners) as ListenerKey[]
     const bListenerKeys = Object.keys(bListeners) as ListenerKey[]
     const keys = aListenerKeys.filter(k => bListenerKeys.indexOf(k) > -1)
+
     if (aListenerKeys.length !== keys.length) {
       patches.push([SET_ATTR, 'on' as AttrKey, bListeners])
+
       return true
     } else {
       let isDifferent = false
+
       keys.forEach(k => {
         if (aListeners[k] !== bListeners[k]) {
           isDifferent = true
         }
       })
+
       if (isDifferent) {
         patches.push([SET_ATTR, 'on' as AttrKey, bListeners])
         return true
@@ -214,9 +219,7 @@ function diffVNode(a: VNode, b: VNode, patches: Patch[]) {
       bVElement.data.innerHTML !== undefined
     ) {
       const innerHTML: string = aVElement.children.map(toHTML).join('')
-      aVElement.data = aVElement.data
-        ? {...aVElement.data, innerHTML}
-        : {innerHTML}
+      aVElement.data = aVElement.data ? {...aVElement.data, innerHTML} : {innerHTML}
       aVElement.children = []
     }
 
