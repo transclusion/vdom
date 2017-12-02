@@ -1,6 +1,6 @@
-import {EventHandler, EventType, IListeners} from './types'
+import {EventHandler, IEventValues} from './types'
 
-export function addListeners(element: Element, listeners: IListeners, handleEvent: EventHandler) {
+export function addListeners(element: Element, eventValues: IEventValues, handleEvent: EventHandler) {
   const eventHandlers = ((element as any).__vdomEventHandlers = (element as any).__vdomEventHandlers || {})
 
   // Remove previous event handlers
@@ -11,9 +11,9 @@ export function addListeners(element: Element, listeners: IListeners, handleEven
   }
 
   // Add event listeners
-  Object.keys(listeners).forEach((eventType: EventType) => {
+  Object.keys(eventValues).forEach(eventType => {
     const handler = (event: Event) => {
-      handleEvent(eventType, event, listeners[eventType])
+      handleEvent(eventValues[eventType], event)
     }
     eventHandlers[eventType] = handler
     element.addEventListener(eventType, handler)

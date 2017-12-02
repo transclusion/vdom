@@ -1,6 +1,6 @@
 import {VIRTUAL_ATTRS, VOID_TAGS} from './constants'
 import {isVElement} from './isVElement'
-import {AttrKey, IAttrs, IStyles, IVElement, StyleProp, VNode} from './types'
+import {IAttrs, IStyles, IVElement, StyleProp, VNode} from './types'
 
 function renderStyles(styles: IStyles | string) {
   if (typeof styles === 'string') {
@@ -20,10 +20,9 @@ function renderAttrs(data?: IAttrs) {
 
   return Object.keys(data)
     .filter(
-      (key: AttrKey) =>
-        data[key] !== undefined && data[key] !== false && key !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(key) === -1
+      key => data[key] !== undefined && data[key] !== false && key !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(key) === -1
     )
-    .map((key: AttrKey) => {
+    .map(key => {
       if (typeof data[key] === 'boolean') {
         return ` ${key}`
       }

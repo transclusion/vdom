@@ -1,29 +1,23 @@
 export type StyleProp = 'border'
 
-export type Listener = any
+export type EventValue = any
 
-export type ListenerKey = 'click'
-
-export interface IListeners {
-  click?: Listener
+export interface IEventValues {
+  [key: string]: EventValue
 }
 
-export type EventType = 'click'
-
-export type EventHandler = (eventType: EventType, event: Event, listener: Listener) => void
+export type EventHandler = (eventValue: EventValue, event: Event) => void
 
 export type HookKey = 'willDiff' | 'didInsert' | 'didUpdate' | 'didRemove'
 
 export interface IHooks {
-  didInsert?: any
-  didRemove?: any
-  didUpdate?: any
-  willDiff?: any
+  didInsert?: object | string | number | null
+  didRemove?: object | string | number | null
+  didUpdate?: object | string | number | null
+  willDiff?: (...args: any[]) => void
 }
 
 export type HookHandler = (elm: Element, value: any) => void
-
-export type AttrKey = 'hook' | 'id' | 'innerHTML' | 'on' | 'style'
 
 export interface IStyles {
   border: string
@@ -34,7 +28,7 @@ export interface IAttrs {
   hook?: IHooks
   id?: string
   innerHTML?: string
-  on?: IListeners
+  on?: IEventValues
   style?: IStyles | string
   [key: string]: any
 }
@@ -60,8 +54,8 @@ export type PopNodePatch = [1, number]
 export type InsertPatch = [2, VNode]
 export type ReplacePatch = [3, VNode]
 export type RemovePatch = [4, number]
-export type SetAttrPatch = [5, AttrKey, any]
-export type RemoveAttrPatch = [6, AttrKey]
+export type SetAttrPatch = [5, string, any]
+export type RemoveAttrPatch = [6, string]
 export type SetTextPatch = [7, string]
 export type DidInsertPatch = [8, any]
 export type DidUpdatePatch = [9, any]

@@ -51,7 +51,7 @@ function handles all events, and that function is passed to both the `mount` and
 ### Example of using event handlers
 
 ```js
-function handleEvent(eventType, event, eventValue) {
+function handleEvent(eventValue) {
   console.log(eventValue) // -> {type: 'INCR'}
 }
 
@@ -73,7 +73,7 @@ patch(element, diff(oldVNode, newVNode), handleEvent)
 ### Example of using hook handlers
 
 ```js
-function handleHook(element, hookValue) {
+function handleHook(hookValue) {
   console.log(hookValue) // -> {type: 'INSERT'}
 }
 

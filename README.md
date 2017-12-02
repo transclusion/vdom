@@ -60,7 +60,7 @@ const view = model => (
   </div>
 )
 
-const handleEvent = (eventType, event, eventValue) => {
+const handleEvent = (eventValue, event) => {
   context.model = update(context.model, eventValue)
   render()
 }

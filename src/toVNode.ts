@@ -1,4 +1,4 @@
-import {AttrKey, IAttrs, VNode} from './types'
+import {IAttrs, VNode} from './types'
 
 export function toVNode(node: Node) {
   if (node.nodeType === 1) {
@@ -6,7 +6,7 @@ export function toVNode(node: Node) {
     const children: VNode[] = Array.from(node.childNodes).map(toVNode)
     const data: IAttrs | null = node.attributes.length
       ? Array.from(node.attributes).reduce((a: IAttrs, attr: Attr) => {
-          a[attr.name as AttrKey] = attr.value
+          a[attr.name] = attr.value
 
           return a
         }, {})

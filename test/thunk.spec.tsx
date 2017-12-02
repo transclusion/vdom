@@ -2,11 +2,9 @@ import {createNode, createVElement, diff, patch, thunk} from '../src/'
 
 describe('thunk', () => {
   it('should not re-render when props are unchanged', () => {
-    expect.assertions(2)
-
+    const mockFn = jest.fn()
     const thunkView = (model: any) => {
-      expect(model).toEqual(model)
-
+      mockFn(model)
       return <div>{model}</div>
     }
     const a = <div />
@@ -17,15 +15,15 @@ describe('thunk', () => {
     patch(element, diff(a, b))
     patch(element, diff(b, c))
 
-    expect(element.outerHTML).toEqual(`<div><div>1</div></div>`)
+    expect(mockFn.mock.calls).toHaveLength(1)
+    expect(mockFn.mock.calls[0][0]).toBe(1)
+    expect(element.outerHTML).toBe(`<div><div>1</div></div>`)
   })
 
   it('should re-render when props are changed', () => {
-    expect.assertions(3)
-
+    const mockFn = jest.fn()
     const thunkView = (model: any) => {
-      expect(model).toEqual(model)
-
+      mockFn(model)
       return <div>{model}</div>
     }
     const a = <div />
@@ -38,6 +36,9 @@ describe('thunk', () => {
     patch(element, diff(b, c))
     patch(element, diff(c, d))
 
-    expect(element.outerHTML).toEqual(`<div><div>2</div></div>`)
+    expect(mockFn.mock.calls).toHaveLength(2)
+    expect(mockFn.mock.calls[0][0]).toBe(1)
+    expect(mockFn.mock.calls[1][0]).toBe(2)
+    expect(element.outerHTML).toBe('<div><div>2</div></div>')
   })
 })

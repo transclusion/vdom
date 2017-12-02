@@ -2,6 +2,7 @@
 
 import {
   DID_INSERT,
+  DID_REMOVE,
   DID_UPDATE,
   INSERT,
   POP_NODE,
@@ -23,6 +24,7 @@ export function patch(element: Element, patches: Patch[], handleEvent?: EventHan
   const nodeStack: Node[] = [element]
   const didInsertHookArgs = []
   const didUpdateHookArgs = []
+  const didRemoveHookArgs = []
 
   let node: Node = element
   let i: number
@@ -100,11 +102,15 @@ export function patch(element: Element, patches: Patch[], handleEvent?: EventHan
         break
 
       case DID_INSERT:
-        didInsertHookArgs.unshift([node as Element, p[1]])
+        didInsertHookArgs.unshift([p[1], node])
         break
 
       case DID_UPDATE:
-        didUpdateHookArgs.unshift([node as Element, p[1]])
+        didUpdateHookArgs.unshift([p[1], node as Element])
+        break
+
+      case DID_REMOVE:
+        didRemoveHookArgs.unshift([p[1], node as Element])
         break
 
       default:
@@ -115,6 +121,7 @@ export function patch(element: Element, patches: Patch[], handleEvent?: EventHan
   if (handleHook) {
     didUpdateHookArgs.forEach(cache => handleHook(cache[0], cache[1]))
     didInsertHookArgs.forEach(cache => handleHook(cache[0], cache[1]))
+    didRemoveHookArgs.forEach(cache => handleHook(cache[0], cache[1]))
   }
 
   return element

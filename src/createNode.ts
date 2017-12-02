@@ -1,16 +1,22 @@
 import {VIRTUAL_ATTRS} from './constants'
-import {AttrKey, EventHandler, IAttrs, IStyles, StyleProp, VNode} from './types'
+import {EventHandler, IAttrs, IVElement, StyleProp, VNode} from './types'
 
 import {addListeners} from './addListeners'
 
 function setAttributes(element: HTMLElement | SVGElement, data: IAttrs) {
   Object.keys(data)
-    .filter((attr: AttrKey) => data[attr] !== undefined && attr !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(attr) === -1)
-    .forEach((attr: AttrKey) => {
-      if (attr === 'style' && typeof data.style === 'object') {
-        Object.keys(data[attr]).forEach((styleProp: StyleProp) => {
-          element.style[styleProp] = (data.style as IStyles)[styleProp]
-        })
+    .filter(attr => data[attr] !== undefined && attr !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(attr) === -1)
+    .forEach(attr => {
+      if (attr === 'style') {
+        const style = data.style
+
+        if (typeof style === 'object') {
+          Object.keys(data[attr]).forEach((styleProp: StyleProp) => {
+            element.style[styleProp] = style[styleProp]
+          })
+        } else {
+          element.setAttribute('style', style)
+        }
       } else if (attr !== 'hook' && attr !== 'on') {
         if (typeof data[attr] === 'string') {
           element.setAttribute(attr, String(data[attr]))
@@ -23,14 +29,9 @@ function setAttributes(element: HTMLElement | SVGElement, data: IAttrs) {
     })
 }
 
-function createSVGNode(vNode: VNode, handleEvent?: EventHandler | null) {
-  if (typeof vNode !== 'object') {
-    return document.createTextNode(vNode)
-  }
-
+function createSVGNode(vNode: IVElement, handleEvent?: EventHandler | null) {
   const element = document.createElementNS('http://www.w3.org/2000/svg', vNode.name)
-
-  const data: IAttrs | undefined = vNode.data
+  const data = vNode.data
 
   if (data) {
     setAttributes(element, data)
@@ -40,7 +41,11 @@ function createSVGNode(vNode: VNode, handleEvent?: EventHandler | null) {
   }
 
   if (!data || data.innerHTML === undefined) {
-    vNode.children.forEach((c: VNode) => element.appendChild(createSVGNode(c, handleEvent)))
+    vNode.children.forEach((c: VNode) => {
+      if (typeof c === 'object') {
+        element.appendChild(createSVGNode(c, handleEvent))
+      }
+    })
   } else {
     element.innerHTML = data.innerHTML
   }
@@ -57,8 +62,8 @@ export function createNode(vNode: VNode, handleEvent?: EventHandler | null) {
     return createSVGNode(vNode, handleEvent)
   }
 
-  const element: HTMLElement = document.createElement(vNode.name)
-  const data: IAttrs = vNode.data
+  const element = document.createElement(vNode.name)
+  const data = vNode.data
 
   if (data) {
     setAttributes(element, data)
