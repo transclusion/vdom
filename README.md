@@ -33,43 +33,58 @@ A basic counter example:
 
 import {createVElement, diff, patch, toVNode} from '@transclusion/vdom'
 
+// Define `counter` component
+
+const counter = {
+  // Returns the initial model
+  init() {
+    return 0
+  },
+
+  // Updates the model
+  update(model, msg) {
+    switch (msg) {
+      case 'DECR':
+        return model - 1
+      case 'INCR':
+        return model + 1
+      default:
+        return model
+    }
+  },
+
+  // Renders the model to a view representation (vdom)
+  view(model) {
+    return (
+      <div id="root">
+        <button on={{click: 'DECR'}}>-</button>
+        <span>{model}</span>
+        <button on={{click: 'INCR'}}>+</button>
+      </div>
+    )
+  }
+}
+
+// Initialize client-side application
+
 const rootElm = document.getElementById('root')
 
 const context = {
   element: rootElm,
   vNode: toVNode(rootElm),
-  model: 0
+  model: counter.init()
 }
 
-const update = (model, msg) => {
-  switch (msg) {
-    case 'DECR':
-      return model - 1
-    case 'INCR':
-      return model + 1
-    default:
-      return model
-  }
-}
-
-const view = model => (
-  <div id="root">
-    <button on={{click: 'DECR'}}>-</button>
-    <span>{model}</span>
-    <button on={{click: 'INCR'}}>+</button>
-  </div>
-)
-
-const handleEvent = (eventValue, event) => {
-  context.model = update(context.model, eventValue)
+function handleMsg(msg) {
+  context.model = counter.update(context.model, msg)
   render()
 }
 
-const render = () => {
-  const nextVNode = view(context.model)
+function render() {
+  const nextVNode = counter.view(context.model)
   const patches = diff(context.vNode, nextVNode)
 
-  content.element = patch(content.element, patches, handleEvent)
+  context.element = patch(context.element, patches, handleMsg)
   context.vNode = nextVNode
 }
 
