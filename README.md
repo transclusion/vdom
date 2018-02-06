@@ -1,5 +1,7 @@
 # @transclusion/vdom
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/transclusion/vdom.svg)](https://greenkeeper.io/)
+
 A JavaScript virtual DOM library for the browser and Node.js.
 
 ```sh
