@@ -1,8 +1,19 @@
 {
   "name": "@transclusion/vdom",
-  "version": "1.0.0-beta.4",
-  "repository": "git@github.com:transclusion/vdom.git",
+  "version": "1.0.0-beta.5",
+  "description": "A JavaScript virtual DOM library for the browser and Node.js.",
+  "keywords": [
+    "vdom"
+  ],
   "author": "Marius Lundgård <studio@mariuslundgard.com>",
+  "homepage": "https://github.com/transclusion/vdom#readme",
+  "bugs": {
+    "url": "https://github.com/transclusion/vdom/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transclusion/vdom.git"
+  },
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
