@@ -1,4 +1,4 @@
-import {diff, patch, toVNode} from '../../dist/module'
+import {diff, patch, toVNode} from '../../dist/es'
 import app from './views/app'
 import {generateRows} from './generateData'
 
@@ -6,7 +6,7 @@ const element = document.querySelector('#root')
 
 let state = {rows: [], selected: null}
 
-const handleMsg = (eventType, event, msg) => {
+const handleMsg = (msg, event) => {
   switch (msg.type) {
     case 'run':
       state = Object.assign({}, state, {rows: generateRows(1000)})

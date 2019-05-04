@@ -101,7 +101,11 @@ describe('patch', () => {
 
     const b = (
       <div class="container">
-        <ul class="row">{Array.from(Array(5)).map((_: any, i: number) => <li>{i}</li>)}</ul>
+        <ul class="row">
+          {Array.from(Array(5)).map((_: any, i: number) => (
+            <li>{i}</li>
+          ))}
+        </ul>
       </div>
     )
 

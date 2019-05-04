@@ -1,5 +1,5 @@
 {
-  "extends": "./.tsconfig/base.json",
+  "extends": "./ts/tsconfig-base.json",
   "compilerOptions": {
     "moduleResolution": "node",
     "jsx": "react",

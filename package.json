@@ -4,15 +4,16 @@
   "repository": "git@github.com:transclusion/vdom.git",
   "author": "Marius Lundgård <studio@mariuslundgard.com>",
   "license": "MIT",
-  "main": "dist/commonjs/index.js",
-  "module": "dist/module/index.js",
-  "typings": "dist/module/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/es/index.js",
+  "typings": "dist/es/index.d.ts",
   "scripts": {
-    "build": "npm-run-all tsc-*",
+    "build": "run-p tsc-*",
     "clean": "rimraf dist",
     "commit": "git-cz",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "format": "prettier --no-bracket-spacing --no-semi --print-width 120 --single-quote --write \"{src,perf/src,test}/**/*.{js,ts,tsx}\"",
+    "format":
+      "prettier --no-bracket-spacing --no-semi --print-width 120 --single-quote --write \"{src,perf/src,test}/**/*.{js,ts,tsx}\"",
     "lint": "tslint -c tslint.json '{src,test}/**/*.{ts,tsx}'",
     "prebuild": "npm run clean",
     "precommit": "npm run build && npm run lint && npm run test",
@@ -20,8 +21,8 @@
     "release": "semantic-release --access public",
     "test": "jest --coverage",
     "test-watch": "jest --watch",
-    "tsc-es5": "tsc -p .tsconfig/commonjs.json",
-    "tsc-es6": "tsc -p .tsconfig/module.json"
+    "tsc-es5": "tsc -p ts/tsconfig-cjs.json",
+    "tsc-es6": "tsc -p ts/tsconfig-es.json"
   },
   "devDependencies": {
     "@transclusion/semantic-release": "^0.2.5",
