@@ -1,9 +1,13 @@
 {
   "name": "@transclusion/vdom",
   "version": "1.0.0-beta.5",
-  "description": "A JavaScript virtual DOM library for the browser and Node.js.",
+  "description": "A tiny JavaScript virtual DOM library for the browser and Node.js.",
   "keywords": [
-    "vdom"
+    "vdom",
+    "library",
+    "javascript",
+    "dom",
+    "nodejs"
   ],
   "author": "Marius Lundgård <studio@mariuslundgard.com>",
   "homepage": "https://github.com/transclusion/vdom#readme",

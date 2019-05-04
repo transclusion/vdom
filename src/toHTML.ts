@@ -1,6 +1,7 @@
 import {VIRTUAL_ATTRS, VOID_TAGS} from './constants'
+import {isThunk} from './isThunk'
 import {isVElement} from './isVElement'
-import {IAttrs, IStyles, IVElement, StyleProp, VNode} from './types'
+import {IAttrs, IStyles, IVElement, IVThunk, StyleProp, VNode} from './types'
 
 function renderStyles(styles: IStyles | string) {
   if (typeof styles === 'string') {
@@ -32,7 +33,15 @@ function renderAttrs(data?: IAttrs) {
     .join('')
 }
 
-export function toHTML(vNode: VNode) {
+export function toHTML(vNode: VNode): string {
+  if (isThunk(vNode)) {
+    // Resolve thunk
+    const t = vNode as IVThunk
+    const vElement = t.fn.apply(undefined, t.args)
+
+    Object.assign(vNode, vElement)
+  }
+
   if (isVElement(vNode)) {
     const vElement: IVElement = vNode as IVElement
     const data: IAttrs | null = vElement.data

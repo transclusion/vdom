@@ -1,6 +1,6 @@
 # @transclusion/vdom
 
-A JavaScript virtual DOM library for the browser and Node.js.
+A tiny JavaScript virtual DOM library for the browser and Node.js.
 
 ```sh
 npm install @transclusion/vdom --save
