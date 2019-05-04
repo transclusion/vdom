@@ -12,7 +12,8 @@
     "clean": "rimraf dist",
     "commit": "git-cz",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "format": "prettier --no-bracket-spacing --no-semi --print-width 120 --single-quote --write \"{src,perf/src,test}/**/*.{js,ts,tsx}\"",
+    "format":
+      "prettier --no-bracket-spacing --no-semi --print-width 120 --single-quote --write \"{src,perf/src,test}/**/*.{js,ts,tsx}\"",
     "lint": "tslint -c tslint.json '{src,test}/**/*.{ts,tsx}'",
     "prebuild": "npm run clean",
     "precommit": "npm run build && npm run lint && npm run test",
@@ -25,18 +26,18 @@
   },
   "devDependencies": {
     "@transclusion/semantic-release": "^0.2.5",
-    "@types/jest": "^21.1.10",
+    "@types/jest": "^24.0.12",
     "@types/node": "^12.0.0",
     "commitizen": "^2.9.6",
-    "coveralls": "^3.0.0",
+    "coveralls": "^3.0.3",
     "cz-conventional-changelog": "^2.0.0",
     "husky": "^0.14.3",
-    "jest": "^22.0.4",
-    "jest-cli": "^22.0.4",
+    "jest": "^24.7.1",
+    "jest-cli": "^24.7.1",
     "npm-run-all": "^4.1.1",
     "prettier": "^1.9.2",
     "rimraf": "^2.6.1",
-    "ts-jest": "^22.0.0",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.16.0",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.4.5"
@@ -45,21 +46,5 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/*.ts"
-    ],
-    "mapCoverage": true,
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "tsx"
-    ],
-    "testRegex": "(\\.|/)(test|spec)\\.tsx?$",
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "verbose": true
   }
 }
