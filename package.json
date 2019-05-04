@@ -12,8 +12,7 @@
     "clean": "rimraf dist",
     "commit": "git-cz",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "format":
-      "prettier --no-bracket-spacing --no-semi --print-width 120 --single-quote --write \"{src,perf/src,test}/**/*.{js,ts,tsx}\"",
+    "format": "prettier --no-bracket-spacing --no-semi --print-width 120 --single-quote --write \"{src,perf/src,test}/**/*.{js,ts,tsx}\"",
     "lint": "tslint -c tslint.json '{src,test}/**/*.{ts,tsx}'",
     "prebuild": "npm run clean",
     "precommit": "npm run build && npm run lint && npm run test",
@@ -28,7 +27,7 @@
     "@transclusion/semantic-release": "^0.2.5",
     "@types/jest": "^24.0.12",
     "@types/node": "^12.0.0",
-    "commitizen": "^2.9.6",
+    "commitizen": "^3.1.1",
     "coveralls": "^3.0.3",
     "cz-conventional-changelog": "^2.0.0",
     "husky": "^0.14.3",
