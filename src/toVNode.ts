@@ -4,8 +4,8 @@ export function toVNode(node: Node) {
   if (node.nodeType === 1) {
     const name: string = node.nodeName.toLowerCase()
     const children: VNode[] = Array.from(node.childNodes).map(toVNode)
-    const data: IAttrs | null = node.attributes.length
-      ? Array.from(node.attributes).reduce((a: IAttrs, attr: Attr) => {
+    const data: IAttrs | null = (node as Element).attributes.length
+      ? Array.from((node as Element).attributes).reduce((a: IAttrs, attr: Attr) => {
           a[attr.name] = attr.value
 
           return a

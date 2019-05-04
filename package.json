@@ -26,7 +26,7 @@
   "devDependencies": {
     "@transclusion/semantic-release": "^0.2.5",
     "@types/jest": "^21.1.10",
-    "@types/node": "^8.5.2",
+    "@types/node": "^12.0.0",
     "commitizen": "^2.9.6",
     "coveralls": "^3.0.0",
     "cz-conventional-changelog": "^2.0.0",
@@ -37,9 +37,9 @@
     "prettier": "^1.9.2",
     "rimraf": "^2.6.1",
     "ts-jest": "^22.0.0",
-    "tslint": "^5.7.0",
-    "tslint-config-prettier": "^1.5.0",
-    "typescript": "^2.6.2"
+    "tslint": "^5.16.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.4.5"
   },
   "config": {
     "commitizen": {
