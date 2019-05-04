@@ -12,11 +12,12 @@ import {
   SET_TEXT
 } from './constants'
 
-import {IAttrs, IVElement, Patch, VNode} from './types'
+import {IAttrs, IVElement, IVThunk, Patch, VNode} from './types'
 
-import {callHook} from './callHook'
+import {callWillDiffHook} from './callWillDiffHook'
 import {extractVNode} from './extractVNode'
 import {hasHook} from './hasHook'
+import {isThunk} from './isThunk'
 import {isVElement} from './isVElement'
 import {isVText} from './isVText'
 import {toHTML} from './toHTML'
@@ -100,7 +101,7 @@ function diffChildren(a: IVElement, b: IVElement, patches: Patch[]) {
 
     if (a.children[i] === undefined) {
       if (isVElement(b.children[i])) {
-        callHook(b.children[i] as IVElement, 'willDiff', a.children[i], b.children[i])
+        callWillDiffHook(b.children[i] as IVElement, a.children[i], b.children[i])
       }
 
       patches.push([INSERT, extractVNode(b.children[i])])
@@ -167,7 +168,7 @@ function diffVNode(a: VNode, b: VNode, patches: Patch[]) {
   if (isVElement(a) && isVElement(b)) {
     const bVElement = b as IVElement
 
-    callHook(bVElement, 'willDiff', a, b)
+    callWillDiffHook(bVElement, a, b)
 
     const aVElement = a as IVElement
     let aData = aVElement.data
@@ -209,6 +210,14 @@ function diffVNode(a: VNode, b: VNode, patches: Patch[]) {
   } else if (isVText(a) && isVText(b)) {
     patches.push([SET_TEXT, b as string])
   } else if (a !== b) {
+    if (isThunk(b)) {
+      // Resolve thunk
+      const t = b as IVThunk
+      const vElement = t.fn.apply(undefined, t.args)
+
+      Object.assign(b, vElement)
+    }
+
     patches.push([REPLACE, extractVNode(b)])
   }
 }

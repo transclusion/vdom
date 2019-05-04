@@ -1,4 +1,4 @@
-import {createVElement, diff} from '../src/'
+import {createVElement, diff, thunk} from '../src/'
 
 describe('diff', () => {
   it('should diff event values', () => {
@@ -119,5 +119,51 @@ describe('diff', () => {
 
     expect(patches).toHaveLength(1)
     expect(patches[0]).toEqual([6, 'on'])
+  })
+
+  it('should replace element with thunk', () => {
+    const a = <div>a</div>
+    const b = (
+      <div>
+        {thunk(
+          (val: string) => (
+            <div>{val}</div>
+          ),
+          'b'
+        )}
+      </div>
+    )
+
+    const patches = diff(a, b)
+
+    expect(patches).toEqual([
+      [1, 0],
+      [
+        3,
+        {
+          children: ['b'],
+          data: undefined,
+          name: 'div'
+        }
+      ]
+    ])
+  })
+
+  it('should replace thunk with element', () => {
+    const a = (
+      <div>
+        {thunk(
+          (val: string) => (
+            <div>{val}</div>
+          ),
+          'a'
+        )}
+      </div>
+    )
+    const b = <div>b</div>
+
+    const patches = diff(a, b)
+
+    expect(patches).toEqual([[1, 0], [3, 'b']])
   })
 })
