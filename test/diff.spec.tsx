@@ -166,4 +166,13 @@ describe('diff', () => {
 
     expect(patches).toEqual([[1, 0], [3, 'b']])
   })
+
+  it('should replace style object', () => {
+    const a = <div style={{display: 'flex', height: '100%'}}>foo</div>
+    const b = <div style={{'min-height': '100%'}}>foo</div>
+
+    const patches = diff(a, b)
+
+    expect(patches).toEqual([[5, 'style', {'min-height': '100%'}]])
+  })
 })

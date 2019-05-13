@@ -72,3 +72,5 @@ export type Patch =
   | DidInsertPatch
   | DidUpdatePatch
   | DidRemovePatch
+
+export type ThunkFunction = (...args: any[]) => VNode

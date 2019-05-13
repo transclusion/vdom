@@ -36,10 +36,15 @@ function renderAttrs(data?: IAttrs) {
 export function toHTML(vNode: VNode): string {
   if (isThunk(vNode)) {
     // Resolve thunk
-    const t = vNode as IVThunk
-    const vElement = t.fn.apply(undefined, t.args)
+    let t = vNode as IVThunk
 
-    Object.assign(vNode, vElement)
+    while (t && t.name === '#thunk') {
+      t = t.fn.apply(undefined, t.args)
+      if (typeof t !== 'object') {
+        return t || ''
+      }
+      Object.assign(vNode, t)
+    }
   }
 
   if (isVElement(vNode)) {

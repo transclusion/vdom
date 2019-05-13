@@ -68,4 +68,19 @@ describe('component', () => {
 
     expect(element.outerHTML).toEqual('<div><div>a</div></div>')
   })
+
+  it('should render nested components', () => {
+    const CompA = ({children}: any) => <div>{children}</div>
+    const CompB = ({children}: any) => <CompA>{children}</CompA>
+    const CompC = ({children}: any) => <CompB>{children}</CompB>
+    const CompD = ({children}: any) => <CompC>{children}</CompC>
+    const CompE = ({name}: {name: string}) => <CompD>{name}</CompD>
+
+    let element = createNode(<div />) as Element
+    const patches = diff(<div />, <CompE name="foo" />)
+
+    element = patch(element, patches)
+
+    expect(element.outerHTML).toEqual('<div>foo</div>')
+  })
 })

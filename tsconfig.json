@@ -7,13 +7,17 @@
     "sourceMap": true,
     "types": ["jest", "node"]
   },
+  "include": ["test/index.d.ts"],
   "files": [
     "src/index.ts",
+    "test/component.spec.tsx",
     "test/createNode.spec.tsx",
     "test/diff.spec.tsx",
+    "test/expand.spec.tsx",
+    "test/mount.spec.tsx",
     "test/patch.spec.tsx",
     "test/thunk.spec.tsx",
-    "test/toHTML.spec.tsx"
-  ],
-  "include": ["test/index.d.ts"]
+    "test/toHTML.spec.tsx",
+    "test/toVNode.spec.tsx"
+  ]
 }
