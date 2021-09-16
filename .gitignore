@@ -4,5 +4,5 @@
 /npm-debug*
 /node_modules
 /npm-debug*
-/yarn.lock
+/package-lock.json
 /yarn-error*
