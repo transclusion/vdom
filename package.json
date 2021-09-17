@@ -1,6 +1,6 @@
 {
   "name": "@transclusion/vdom",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A tiny JavaScript virtual DOM library for the browser and Node.js.",
   "keywords": [
     "vdom",
