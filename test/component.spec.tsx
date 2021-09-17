@@ -1,3 +1,5 @@
+/** @jsx createVElement */
+
 import {createNode, createVElement, diff, patch, toHTML} from '../src/'
 
 describe('component', () => {
@@ -50,18 +52,21 @@ describe('component', () => {
 
     // render 1
     const a1 = A()
+
     patches = diff(vNode, a1)
     element = patch(element, patches)
     vNode = a1
 
     // render 2
     const b2 = B()
+
     patches = diff(vNode, b2)
     element = patch(element, patches)
     vNode = b2
 
     // render 3
     const a3 = A()
+
     patches = diff(vNode, a3)
     element = patch(element, patches)
     vNode = a3

@@ -1,5 +1,4 @@
-// tslint:disable cyclomatic-complexity
-
+import {addListeners} from './addListeners'
 import {
   DID_INSERT,
   DID_REMOVE,
@@ -11,15 +10,18 @@ import {
   REMOVE_ATTR,
   REPLACE,
   SET_ATTR,
-  SET_TEXT
+  SET_TEXT,
 } from './constants'
 
+import {createNode} from './createNode'
 import {EventHandler, HookHandler, Patch, StyleProp} from './types'
 
-import {addListeners} from './addListeners'
-import {createNode} from './createNode'
-
-export function patch(element: Element, patches: Patch[], handleEvent?: EventHandler | null, handleHook?: HookHandler) {
+export function patch(
+  element: Element,
+  patches: Patch[],
+  handleEvent?: EventHandler | null,
+  handleHook?: HookHandler
+): Element {
   const len: number = patches.length
   const nodeStack: Node[] = [element]
   const didInsertHookArgs = []
@@ -35,24 +37,29 @@ export function patch(element: Element, patches: Patch[], handleEvent?: EventHan
     switch (p[0]) {
       case PUSH_NODE: {
         let j: number
+
         for (j = 1; j < p.length; j++) {
           node = node.childNodes[p[j]]
           nodeStack.push(node)
         }
+
         break
       }
 
       case POP_NODE: {
         let j: number
+
         for (j = 0; j < p[1]; j++) {
           nodeStack.pop()
           node = nodeStack[nodeStack.length - 1]
         }
+
         break
       }
 
       case REPLACE: {
         const newNode: Node = createNode(p[1], handleEvent)
+
         ;(node.parentNode as Element).replaceChild(newNode, node)
         node = newNode
         nodeStack[nodeStack.length - 1] = node
@@ -61,41 +68,65 @@ export function patch(element: Element, patches: Patch[], handleEvent?: EventHan
 
       case SET_ATTR:
         if (p[1] === 'innerHTML') {
-          ;(node as Element).innerHTML = p[2]
+          const el = node as Element
+
+          el.innerHTML = p[2]
         } else if (p[1] === 'on') {
           if (handleEvent) {
             addListeners(node as Element, p[2], handleEvent)
           }
         } else if (p[1] === 'style' && typeof p[2] === 'object') {
           Object.keys(p[2]).forEach((styleProp: StyleProp) => {
-            ;(node as HTMLElement).style[styleProp] = p[2][styleProp]
+            const el = node as HTMLElement
+
+            el.style[styleProp as any] = p[2][styleProp]
           })
         } else if (p[1] === 'value' && node.nodeName === 'INPUT') {
-          ;(node as HTMLInputElement).value = p[2]
+          const el = node as HTMLInputElement
+
+          el.value = p[2]
         } else if (p[1] === 'value' && node.nodeName === 'TEXTAREA') {
-          ;(node as HTMLTextAreaElement).value = p[2]
+          const el = node as HTMLTextAreaElement
+
+          el.value = p[2]
         } else {
           if (p[2] === true) {
-            ;(node as Element).setAttribute(p[1], '')
+            const el = node as Element
+
+            el.setAttribute(p[1], '')
           } else if (p[2] === false) {
-            ;(node as Element).removeAttribute(p[1])
+            const el = node as Element
+
+            el.removeAttribute(p[1])
           } else {
-            ;(node as Element).setAttribute(p[1], p[2])
+            const el = node as Element
+
+            el.setAttribute(p[1], p[2])
           }
         }
+
         break
 
-      case REMOVE_ATTR:
-        ;(node as Element).removeAttribute(p[1])
-        break
+      case REMOVE_ATTR: {
+        const el = node as Element
 
-      case REMOVE:
-        ;(node as Element).removeChild(node.childNodes[p[1]])
+        el.removeAttribute(p[1])
         break
+      }
 
-      case INSERT:
-        ;(node as Element).appendChild(createNode(p[1], handleEvent))
+      case REMOVE: {
+        const el = node as Element
+
+        el.removeChild(node.childNodes[p[1]])
         break
+      }
+
+      case INSERT: {
+        const el = node as Element
+
+        el.appendChild(createNode(p[1], handleEvent))
+        break
+      }
 
       case SET_TEXT:
         node.nodeValue = p[1]
@@ -119,9 +150,9 @@ export function patch(element: Element, patches: Patch[], handleEvent?: EventHan
   }
 
   if (handleHook) {
-    didUpdateHookArgs.forEach(cache => handleHook(cache[0], cache[1]))
-    didInsertHookArgs.forEach(cache => handleHook(cache[0], cache[1]))
-    didRemoveHookArgs.forEach(cache => handleHook(cache[0], cache[1]))
+    didUpdateHookArgs.forEach((cache) => handleHook(cache[0], cache[1]))
+    didInsertHookArgs.forEach((cache) => handleHook(cache[0], cache[1]))
+    didRemoveHookArgs.forEach((cache) => handleHook(cache[0], cache[1]))
   }
 
   return element

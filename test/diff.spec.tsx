@@ -143,9 +143,9 @@ describe('diff', () => {
         {
           children: ['b'],
           data: undefined,
-          name: 'div'
-        }
-      ]
+          name: 'div',
+        },
+      ],
     ])
   })
 
@@ -164,7 +164,10 @@ describe('diff', () => {
 
     const patches = diff(a, b)
 
-    expect(patches).toEqual([[1, 0], [3, 'b']])
+    expect(patches).toEqual([
+      [1, 0],
+      [3, 'b'],
+    ])
   })
 
   it('should replace style object', () => {

@@ -1,20 +1,19 @@
+import {addListeners} from './addListeners'
 import {VIRTUAL_ATTRS} from './constants'
 import {EventHandler, IAttrs, IVElement, StyleProp, VNode} from './types'
 
-import {addListeners} from './addListeners'
-
 function setAttributes(element: HTMLElement | SVGElement, data: IAttrs) {
   Object.keys(data)
-    .filter(attr => data[attr] !== undefined && attr !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(attr) === -1)
-    .forEach(attr => {
+    .filter((attr) => data[attr] !== undefined && attr !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(attr) === -1)
+    .forEach((attr) => {
       if (attr === 'style') {
         const style = data.style
 
         if (typeof style === 'object') {
-          Object.keys(data[attr]).forEach((styleProp: StyleProp) => {
-            element.style[styleProp] = style[styleProp]
+          Object.keys(style).forEach((styleProp: StyleProp) => {
+            element.style[styleProp as any] = style[styleProp]
           })
-        } else {
+        } else if (typeof style === 'string') {
           element.setAttribute('style', style)
         }
       } else if (attr !== 'hook' && attr !== 'on') {
@@ -35,6 +34,7 @@ function createSVGNode(vNode: IVElement, handleEvent?: EventHandler | null) {
 
   if (data) {
     setAttributes(element, data)
+
     if (handleEvent && data.on) {
       addListeners(element, data.on, handleEvent)
     }
@@ -53,7 +53,7 @@ function createSVGNode(vNode: IVElement, handleEvent?: EventHandler | null) {
   return element
 }
 
-export function createNode(vNode: VNode, handleEvent?: EventHandler | null) {
+export function createNode(vNode: VNode, handleEvent?: EventHandler | null): Node {
   if (typeof vNode !== 'object') {
     return document.createTextNode(vNode)
   }
@@ -67,6 +67,7 @@ export function createNode(vNode: VNode, handleEvent?: EventHandler | null) {
 
   if (data) {
     setAttributes(element, data)
+
     if (handleEvent && data.on) {
       addListeners(element, data.on, handleEvent)
     }

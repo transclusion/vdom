@@ -1,12 +1,17 @@
+/** @jsx createVElement */
+
 import {createNode, createVElement, diff, patch, thunk} from '../src/'
 
 describe('thunk', () => {
   it('should not re-render when props are unchanged', () => {
     const mockFn = jest.fn()
+
     const thunkView = (model: any) => {
       mockFn(model)
+
       return <div>{model}</div>
     }
+
     const a = <div />
     const b = <div>{thunk(thunkView, 1)}</div>
     const c = <div>{thunk(thunkView, 1)}</div>
@@ -22,10 +27,13 @@ describe('thunk', () => {
 
   it('should re-render when props are changed', () => {
     const mockFn = jest.fn()
+
     const thunkView = (model: any) => {
       mockFn(model)
+
       return <div>{model}</div>
     }
+
     const a = <div />
     const b = <div>{thunk(thunkView, 1)}</div>
     const c = <div>{thunk(thunkView, 1)}</div>

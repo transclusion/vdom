@@ -1,3 +1,5 @@
+/** @jsx createVElement */
+
 import {createVElement, toHTML} from '../src/'
 
 describe('toHTML', () => {

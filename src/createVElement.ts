@@ -1,5 +1,6 @@
 import {thunk} from './thunk'
 import {IAttrs, IVElement, VNode} from './types'
+import {ThunkFunction} from '.'
 
 type Component = (...args: any[]) => VNode | null
 
@@ -9,12 +10,12 @@ export function createVElement(name: string | Component, data?: IAttrs | null, .
     .filter((c: VNode) => c !== null && c !== undefined && (typeof c !== 'boolean' || Boolean(c) !== false))
 
   if (typeof name === 'function') {
-    return thunk(name, {...(data || {}), children})
+    return thunk(name as ThunkFunction, {...(data || {}), children})
   }
 
   return {
     children,
     data: !data ? undefined : data,
-    name
+    name,
   }
 }

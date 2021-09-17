@@ -1,0 +1,4 @@
+/coverage
+/dist
+/perf/dist
+/perf/node_modules

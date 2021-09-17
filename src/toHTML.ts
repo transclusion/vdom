@@ -21,9 +21,10 @@ function renderAttrs(data?: IAttrs) {
 
   return Object.keys(data)
     .filter(
-      key => data[key] !== undefined && data[key] !== false && key !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(key) === -1
+      (key) =>
+        data[key] !== undefined && data[key] !== false && key !== 'innerHTML' && VIRTUAL_ATTRS.indexOf(key) === -1
     )
-    .map(key => {
+    .map((key) => {
       if (typeof data[key] === 'boolean') {
         return ` ${key}`
       }
@@ -40,16 +41,18 @@ export function toHTML(vNode: VNode): string {
 
     while (t && t.name === '#thunk') {
       t = t.fn.apply(undefined, t.args)
+
       if (typeof t !== 'object') {
         return t || ''
       }
+
       Object.assign(vNode, t)
     }
   }
 
   if (isVElement(vNode)) {
     const vElement: IVElement = vNode as IVElement
-    const data: IAttrs | null = vElement.data
+    const data: IAttrs | undefined = vElement.data
 
     let html: string
 

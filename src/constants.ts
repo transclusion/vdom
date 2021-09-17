@@ -24,5 +24,5 @@ export const VOID_TAGS = [
   'param',
   'source',
   'track',
-  'wbr'
+  'wbr',
 ]

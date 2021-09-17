@@ -1,3 +1,4 @@
+import {callWillDiffHook} from './callWillDiffHook'
 import {
   DID_INSERT,
   DID_REMOVE,
@@ -9,18 +10,15 @@ import {
   REMOVE_ATTR,
   REPLACE,
   SET_ATTR,
-  SET_TEXT
+  SET_TEXT,
 } from './constants'
-
-import {IAttrs, IVElement, IVThunk, Patch, VNode} from './types'
-
-import {callWillDiffHook} from './callWillDiffHook'
 import {extractVNode} from './extractVNode'
 import {hasHook} from './hasHook'
 import {isThunk} from './isThunk'
 import {isVElement} from './isVElement'
 import {isVText} from './isVText'
 import {toHTML} from './toHTML'
+import {IAttrs, IVElement, IVThunk, Patch, VNode} from './types'
 
 function diffListeners(a: IAttrs, b: IAttrs, patches: Patch[]) {
   const aEventValues = a.on
@@ -31,25 +29,26 @@ function diffListeners(a: IAttrs, b: IAttrs, patches: Patch[]) {
   }
 
   const aListenerKeys = aEventValues ? Object.keys(aEventValues) : []
-  const bListenerKeys = Object.keys(bEventValues)
+  const bListenerKeys = bEventValues ? Object.keys(bEventValues) : []
 
   if (aListenerKeys.length !== bListenerKeys.length) {
     patches.push([SET_ATTR, 'on', bEventValues])
 
     return true
   } else {
-    const keys = aListenerKeys.filter(k => bListenerKeys.indexOf(k) > -1)
+    const keys = aListenerKeys.filter((k) => bListenerKeys.indexOf(k) > -1)
 
     let isDifferent = false
 
-    keys.forEach(k => {
-      if (aEventValues[k] !== bEventValues[k]) {
+    keys.forEach((k) => {
+      if ((aEventValues || {})[k] !== (bEventValues || {})[k]) {
         isDifferent = true
       }
     })
 
     if (isDifferent) {
       patches.push([SET_ATTR, 'on', bEventValues])
+
       return true
     }
   }
@@ -62,7 +61,7 @@ function diffData(a: IAttrs | undefined, b: IAttrs | undefined, patches: Patch[]
 
   if (b) {
     // Diff added/updated attributes
-    Object.keys(b).forEach(attr => {
+    Object.keys(b).forEach((attr) => {
       if (!a) {
         patches.push([SET_ATTR, attr, b[attr]])
       } else if (attr === 'on') {
@@ -78,7 +77,7 @@ function diffData(a: IAttrs | undefined, b: IAttrs | undefined, patches: Patch[]
 
   if (a) {
     // Diff removed attributes
-    Object.keys(a).forEach(attr => {
+    Object.keys(a).forEach((attr) => {
       if (!b || b[attr] === undefined) {
         patches.push([REMOVE_ATTR, attr])
         didUpdate = true
@@ -108,7 +107,7 @@ function diffChildren(a: IVElement, b: IVElement, patches: Patch[]) {
 
       if (isVElement(b.children[i]) && hasHook(b.children[i] as IVElement, 'didInsert')) {
         patches.push([PUSH_NODE, index])
-        patches.push([DID_INSERT, (b.children[i] as IVElement).data.hook.didInsert])
+        patches.push([DID_INSERT, (b.children[i] as IVElement).data?.hook?.didInsert])
         patches.push([POP_NODE, 1])
       }
 
@@ -117,7 +116,7 @@ function diffChildren(a: IVElement, b: IVElement, patches: Patch[]) {
       patches.push([REMOVE, index])
 
       if (isVElement(a.children[i]) && hasHook(a.children[i] as IVElement, 'didRemove')) {
-        patches.push([DID_REMOVE, (a.children[i] as IVElement).data.hook.didRemove])
+        patches.push([DID_REMOVE, (a.children[i] as IVElement).data?.hook?.didRemove])
       }
 
       didUpdate = true
@@ -129,20 +128,23 @@ function diffChildren(a: IVElement, b: IVElement, patches: Patch[]) {
 
       if (childPatches.length) {
         let pHead = childPatches[0]
+
         if (pHead[0] === PUSH_NODE) {
           // If the first child patch is a PUSH_NODE patch, then insert the index
-          // tslint:disable-next-line no-any
-          ;(pHead as any).splice(1, 0, index)
+          const h = pHead as any
+
+          h.splice(1, 0, index)
         } else {
           // Otherwise add a new PUSH_NODE patch
           patches.push([PUSH_NODE, index])
         }
 
         // Append child patches
-        ;[].push.apply(patches, childPatches)
+        patches.push(...childPatches)
 
         // If the last patch is a POP_NODE patch, then increase the pop count by 1
         pHead = patches[patches.length - 1]
+
         if (pHead && pHead[0] === POP_NODE) {
           pHead[1] += 1
         } else {
@@ -174,7 +176,7 @@ function diffVNode(a: VNode, b: VNode, patches: Patch[]) {
     let aData = aVElement.data
     const bData = bVElement.data
 
-    if ((!aData || aData.innerHTML === undefined) && (bVElement.data && bData.innerHTML !== undefined)) {
+    if ((!aData || aData.innerHTML === undefined) && bVElement.data && bData?.innerHTML !== undefined) {
       const innerHTML: string = aVElement.children.map(toHTML).join('')
 
       aVElement.data = aData = aData ? {...aData, innerHTML} : {innerHTML}
@@ -183,7 +185,7 @@ function diffVNode(a: VNode, b: VNode, patches: Patch[]) {
 
     if (aVElement.name === bVElement.name) {
       if (!hasHook(a as IVElement, 'didInsert') && hasHook(bVElement, 'didInsert')) {
-        patches.push([DID_INSERT, bData.hook.didInsert])
+        patches.push([DID_INSERT, bData?.hook?.didInsert])
         didInsert = true
       }
 
@@ -200,7 +202,7 @@ function diffVNode(a: VNode, b: VNode, patches: Patch[]) {
       didInsert = true
 
       if (hasHook(bVElement, 'didInsert')) {
-        patches.push([DID_INSERT, bData.hook.didInsert])
+        patches.push([DID_INSERT, bData?.hook?.didInsert])
       }
     }
 
@@ -222,7 +224,7 @@ function diffVNode(a: VNode, b: VNode, patches: Patch[]) {
   }
 }
 
-export function diff(a: VNode, b: VNode) {
+export function diff(a: VNode, b: VNode): Patch[] {
   const patches: Patch[] = []
 
   diffVNode(a, b, patches)

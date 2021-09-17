@@ -1,10 +1,10 @@
 import {IAttrs, VNode} from './types'
 
-export function toVNode(node: Node) {
+export function toVNode(node: Node): VNode {
   if (node.nodeType === 1) {
     const name: string = node.nodeName.toLowerCase()
     const children: VNode[] = Array.from(node.childNodes).map(toVNode)
-    const data: IAttrs | null = (node as Element).attributes.length
+    const data: IAttrs | undefined = (node as Element).attributes.length
       ? Array.from((node as Element).attributes).reduce((a: IAttrs, attr: Attr) => {
           a[attr.name] = attr.value
 
@@ -12,11 +12,7 @@ export function toVNode(node: Node) {
         }, {})
       : undefined
 
-    return {
-      children,
-      data,
-      name
-    }
+    return {children, data, name}
   }
 
   return node.textContent || ''

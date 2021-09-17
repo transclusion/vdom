@@ -1,3 +1,5 @@
+/** @jsx createVElement */
+
 import {createVElement, expand} from '../src'
 
 describe('expand', () => {

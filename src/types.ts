@@ -1,4 +1,4 @@
-export type StyleProp = 'border'
+export type StyleProp = string
 
 export type EventValue = any
 
@@ -11,9 +11,9 @@ export type EventHandler = (eventValue: EventValue, event: Event) => void
 export type HookKey = 'willDiff' | 'didInsert' | 'didUpdate' | 'didRemove'
 
 export interface IHooks {
-  didInsert?: object | string | number | null
-  didRemove?: object | string | number | null
-  didUpdate?: object | string | number | null
+  didInsert?: Record<string, unknown> | string | number | null
+  didRemove?: Record<string, unknown> | string | number | null
+  didUpdate?: Record<string, unknown> | string | number | null
   willDiff?: (...args: any[]) => void
 }
 
@@ -21,6 +21,7 @@ export type HookHandler = (elm: Element, value: any) => void
 
 export interface IStyles {
   border: string
+  [key: string]: string
 }
 
 export interface IAttrs {
@@ -43,8 +44,7 @@ export interface IVElement {
 
 export interface IVThunk extends IVElement {
   args: any[]
-  // tslint:disable-next-line ban-types
-  fn: Function
+  fn: (...args: unknown[]) => any
 }
 
 export type VNode = IVElement | IVThunk | VText

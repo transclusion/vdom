@@ -1,3 +1,5 @@
+/** @jsx createVElement */
+
 import {createNode, createVElement} from '../src/'
 
 describe('createNode', () => {
@@ -48,6 +50,7 @@ describe('createNode', () => {
     const textNode = createNode(a) as Text
 
     const div = document.createElement('div')
+
     div.appendChild(textNode)
 
     expect(div.outerHTML).toEqual('<div>foo</div>')
@@ -63,7 +66,7 @@ describe('createNode', () => {
     const svg = createNode(a) as SVGElement
 
     expect(svg.namespaceURI).toEqual('http://www.w3.org/2000/svg')
-    expect(svg.firstChild.namespaceURI).toEqual('http://www.w3.org/2000/svg')
+    expect(svg.firstChild instanceof SVGElement && svg.firstChild.namespaceURI).toEqual('http://www.w3.org/2000/svg')
     expect(svg.outerHTML).toEqual(
       '<svg width="10" height="10" viewbox="0 0 10 10"><path d="M 0 0 L 10 10"></path></svg>'
     )
@@ -76,6 +79,7 @@ describe('createNode', () => {
     const button = createNode(a, mockEventHandler)
 
     const clickEvent = document.createEvent('MouseEvents')
+
     clickEvent.initEvent('click', false, true)
     button.dispatchEvent(clickEvent)
 
@@ -94,8 +98,10 @@ describe('createNode', () => {
     const svg = createNode(a, mockEventHandler)
 
     const clickEvent = document.createEvent('MouseEvents')
+
     clickEvent.initEvent('click', false, true)
-    svg.firstChild.dispatchEvent(clickEvent)
+
+    svg.firstChild!.dispatchEvent(clickEvent)
 
     expect(mockEventHandler.mock.calls).toHaveLength(1)
     expect(mockEventHandler.mock.calls[0][0]).toBe('bar')

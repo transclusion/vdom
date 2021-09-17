@@ -4,13 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "watch": "webpack --watch"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.6.0",
-    "webpack": "^3.3.0"
+    "vite": "^2.5.4"
   }
 }

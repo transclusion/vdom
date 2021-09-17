@@ -1,3 +1,5 @@
+import {Row} from './types'
+
 const adjectives = [
   'pretty',
   'large',
@@ -23,7 +25,7 @@ const adjectives = [
   'inexpensive',
   'cheap',
   'expensive',
-  'fancy'
+  'fancy',
 ]
 
 const colours = ['red', 'yellow', 'blue', 'green', 'pink', 'brown', 'purple', 'brown', 'white', 'black', 'orange']
@@ -41,16 +43,16 @@ const nouns = [
   'burger',
   'pizza',
   'mouse',
-  'keyboard'
+  'keyboard',
 ]
 
-function _random(max) {
+function _random(max: number) {
   return Math.round(Math.random() * 1000) % max
 }
 
 let id = 1
 
-export function generateRow() {
+export function generateRow(): Row {
   return {
     id: id++,
     label:
@@ -58,11 +60,11 @@ export function generateRow() {
       ' ' +
       colours[_random(colours.length)] +
       ' ' +
-      nouns[_random(nouns.length)]
+      nouns[_random(nouns.length)],
   }
 }
 
-export function generateRows(count) {
+export function generateRows(count: number): Row[] {
   const _data = []
 
   for (let i = 0; i < count; i++) {

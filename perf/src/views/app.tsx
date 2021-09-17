@@ -1,6 +1,7 @@
 /** @jsx createVElement */
 
-import {createVElement, thunk} from '../../../dist/es'
+import {createVElement, IVElement, thunk} from '@transclusion/vdom'
+import {State} from '../types'
 
 const jumbotron = (
   <div class="jumbotron">
@@ -46,7 +47,7 @@ const jumbotron = (
   </div>
 )
 
-const rowView = ({row, selected}) => (
+const rowView = ({row, selected}: {row: {id: string; label: string}; selected: string}) => (
   <tr class={row.id === selected ? 'danger' : ''}>
     <td>{row.id}</td>
     <td>
@@ -59,13 +60,13 @@ const rowView = ({row, selected}) => (
   </tr>
 )
 
-const tableView = ({rows, selected}) => (
+const tableView = ({rows, selected}: State) => (
   <table class="table table-hover table-striped">
-    <tbody>{rows.map(row => thunk(rowView, {row, selected}))}</tbody>
+    <tbody>{rows.map((row) => thunk(rowView, {row, selected}))}</tbody>
   </table>
 )
 
-export default model => (
+export default (model: State): IVElement => (
   <div id="root" class="container">
     {jumbotron}
     {tableView(model)}

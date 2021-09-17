@@ -1,3 +1,5 @@
+/** @jsx createVElement */
+
 import {createNode, createVElement, mount} from '../src/'
 
 describe('mount', () => {
@@ -10,6 +12,7 @@ describe('mount', () => {
     mount(element, a, mockEventHandler)
 
     const clickEvent = document.createEvent('MouseEvents')
+
     clickEvent.initEvent('click', false, true)
     element.dispatchEvent(clickEvent)
 

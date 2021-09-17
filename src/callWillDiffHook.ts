@@ -1,9 +1,10 @@
+import {hasHook} from './hasHook'
 import {IVElement} from './types'
 
-import {hasHook} from './hasHook'
-
-export function callWillDiffHook(vElement: IVElement, ...args: any[]) {
+export function callWillDiffHook(vElement: IVElement, ...args: any[]): void {
   if (hasHook(vElement, 'willDiff')) {
-    vElement.data.hook.willDiff(...args)
+    const willDiff = vElement.data?.hook?.willDiff
+
+    if (willDiff) willDiff(...args)
   }
 }

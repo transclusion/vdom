@@ -1,3 +1,5 @@
+/** @jsx createVElement */
+
 import {createNode, createVElement, diff, patch, toVNode} from '../src/'
 
 describe('patch', () => {
@@ -188,6 +190,7 @@ describe('patch', () => {
     patch(element, patches, mockEventHandler)
 
     const clickEvent = document.createEvent('MouseEvents')
+
     clickEvent.initEvent('click', false, true)
     element.dispatchEvent(clickEvent)
 

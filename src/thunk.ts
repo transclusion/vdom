@@ -27,6 +27,6 @@ export function thunk(fn: ThunkFunction, ...args: any[]): IVThunk {
     children: [],
     data: {hook: {willDiff: thunk_willDiff}},
     fn,
-    name: '#thunk'
+    name: '#thunk',
   }
 }

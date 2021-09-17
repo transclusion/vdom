@@ -1,12 +1,15 @@
-import {diff, patch, toVNode} from '../../dist/es'
-import app from './views/app'
+/* eslint-disable no-console */
+
+import {diff, patch, toVNode} from '@transclusion/vdom'
 import {generateRows} from './generateData'
+import {State} from './types'
+import app from './views/app'
 
 const element = document.querySelector('#root')
 
-let state = {rows: [], selected: null}
+let state: State = {rows: [], selected: null}
 
-const handleMsg = (msg, event) => {
+const handleMsg = (msg: any) => {
   switch (msg.type) {
     case 'run':
       state = Object.assign({}, state, {rows: generateRows(1000)})
@@ -34,7 +37,7 @@ const handleMsg = (msg, event) => {
           }
 
           return row
-        })
+        }),
       })
       console.time('update')
       render()
@@ -45,7 +48,7 @@ const handleMsg = (msg, event) => {
 
     case 'add':
       state = Object.assign({}, state, {
-        rows: state.rows.concat(generateRows(1000))
+        rows: state.rows.concat(generateRows(1000)),
       })
       console.time('add')
       render()
@@ -65,7 +68,7 @@ const handleMsg = (msg, event) => {
 
     case 'delete':
       state = Object.assign({}, state, {
-        rows: state.rows.filter(row => row.id !== msg.id)
+        rows: state.rows.filter((row) => row.id !== msg.id),
       })
       console.time('delete')
       render()
@@ -76,7 +79,7 @@ const handleMsg = (msg, event) => {
 
     case 'select':
       state = Object.assign({}, state, {
-        selected: msg.id
+        selected: msg.id,
       })
       console.time('select')
       render()
@@ -88,7 +91,8 @@ const handleMsg = (msg, event) => {
     case 'swapRows':
       if (state.rows.length > 10) {
         const rows = state.rows.slice(0)
-        var a = rows[4]
+        const a = rows[4]
+
         rows[4] = rows[9]
         rows[9] = a
         state = Object.assign({}, state, {rows})
@@ -100,17 +104,18 @@ const handleMsg = (msg, event) => {
       } else {
         console.warn('no rows to swap')
       }
+
       break
   }
 }
 
-let vNode = toVNode(element)
+let vNode = toVNode(element!)
 
 const render = () => {
   const nextVNode = app(state)
   const patches = diff(vNode, nextVNode)
 
-  patch(element, patches, handleMsg)
+  patch(element!, patches, handleMsg)
   vNode = nextVNode
 }
 

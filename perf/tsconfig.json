@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.settings",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./lib/dts/",
+    "module": "ES2020",
+    "noEmit": true,
+    "jsx": "react",
+    "jsxFactory": "createVElement",
+    "baseUrl": "..",
+    "paths": {
+      "@transclusion/vdom": ["./src"]
+    }
+  }
+}

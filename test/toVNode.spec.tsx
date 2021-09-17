@@ -1,3 +1,5 @@
+/** @jsx createVElement */
+
 import {createNode, createVElement, toVNode} from '../src/'
 
 describe('toVNode', () => {

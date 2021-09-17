@@ -1,3 +1,12 @@
 module.exports = {
-  preset: "ts-jest"
-};
+  testEnvironment: 'jsdom',
+  transform: {
+    '^.+\\.tsx?$': [
+      'esbuild-jest',
+      {
+        jsxFactory: 'createVElement',
+        sourcemap: true,
+      },
+    ],
+  },
+}
