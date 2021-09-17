@@ -47,7 +47,7 @@ const jumbotron = (
   </div>
 )
 
-const rowView = ({row, selected}: {row: {id: string; label: string}; selected: string}) => (
+const rowView = (row: {id: string; label: string}, selected: string) => (
   <tr class={row.id === selected ? 'danger' : ''}>
     <td>{row.id}</td>
     <td>
@@ -62,7 +62,7 @@ const rowView = ({row, selected}: {row: {id: string; label: string}; selected: s
 
 const tableView = ({rows, selected}: State) => (
   <table class="table table-hover table-striped">
-    <tbody>{rows.map((row) => thunk(rowView, {row, selected}))}</tbody>
+    <tbody>{rows.map((row) => thunk(rowView, row, selected))}</tbody>
   </table>
 )
 
