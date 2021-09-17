@@ -33,7 +33,6 @@
     "dev": "(cd perf && yarn dev)",
     "format": "prettier --write \"{src,perf/src,test}/**/*.{js,ts,tsx}\"",
     "lint": "eslint . --ext .js,.jsx,.mjs,.ts,.tsx -- ",
-    "postinstall": "(cd perf && yarn)",
     "prebuild": "run-s clean",
     "precommit": "run-s build lint test",
     "prepublishOnly": "run-s build",
