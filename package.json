@@ -30,6 +30,7 @@
     "clean": "rimraf dist",
     "commit": "git-cz",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "dev": "(cd perf && yarn dev)",
     "format": "prettier --write \"{src,perf/src,test}/**/*.{js,ts,tsx}\"",
     "lint": "eslint . --ext .js,.jsx,.mjs,.ts,.tsx -- ",
     "postinstall": "(cd perf && yarn)",
